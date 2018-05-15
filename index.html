@@ -1,0 +1,41 @@
+<html>
+  <head>
+     <!-- a frame-->
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+     <!-- environment -->
+     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+     <!-- physics and other extras -->
+     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+
+    <title>WebVR with A-Frame</title>
+  </head>
+
+  <body>
+    <a-scene physics=debug:true; stats>
+      <a-assets>
+        <img id="ziegel" src="wall.jpg">
+        <img id="wiese" src="wiese.jpg">
+         <a-asset-item id="sword" src="models/scene.gltf"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 1.5 0">
+        <a-cursor></a-cursor>
+
+        <a-entity  position="0 0 -2" static-body="shape:sphere; sphereRadius: 0.4;" id='weapon'>
+           <a-entity position="0.4 0 0.8" rotation="110 90 -30" scale="0.1 0.1 0.1" gltf-model="#sword"></a-entity>
+        </a-entity>
+      </a-camera>
+
+      <a-box src ="#ziegel" position="3 5 -3" rotation="45 90 0" dynamic-body shadow="receive:true" ></a-box>
+      <a-box src ="#ziegel" position="3 5 -3" rotation="45 90 0" dynamic-body shadow="receive:true"></a-box>
+
+      <a-entity light="type: directional; color: #ffffff; intensity: 0.5;" position="31 80 -50"></a-entity>
+
+
+     <a-entity environment="preset: forest; dressingAmount: 50" ></a-entity>
+        <a-plane position="0 -0.1 0 " rotation="-90 0 0" width="400" height="400" color="blue" static-body></a-plane>
+
+      <!-- 360° Video Test <a-sky src="360_test.mp4"></a-sky> -->
+    </a-scene>
+  </body>
+</html>
