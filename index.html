@@ -5,23 +5,26 @@
      <!-- environment -->
      <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
      <!-- physics and other extras -->
-     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+     <script src="https://rawgit.com/takahirox/aframe-rain/master/build/aframe-rain.min.js"></script>
 
-    <title>WebVR with A-Frame</title>
+     <script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
+     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+
+    <title>IC Web VR - Daniel Schneider</title>
   </head>
 
   <body>
-    <a-scene physics=debug:true; stats>
+  <!-- physics=debug:true; -->
+    <a-scene stats rain>
       <a-assets>
         <img id="ziegel" src="wall.jpg">
         <img id="wiese" src="wiese.jpg">
          <a-asset-item id="sword" src="models/scene.gltf"></a-asset-item>
       </a-assets>
-
       <a-camera position="0 1.5 0">
-        <a-cursor></a-cursor>
 
-        <a-entity  position="0 0 -2" static-body="shape:sphere; sphereRadius: 0.4;" id='weapon'>
+        <a-entity  position="0 0 -2" static-body="shape:sphere; sphereRadius: 0.6;" id='weapon'>
            <a-entity position="0.4 0 0.8" rotation="110 90 -30" scale="0.1 0.1 0.1" gltf-model="#sword"></a-entity>
         </a-entity>
       </a-camera>
@@ -33,9 +36,29 @@
 
 
      <a-entity environment="preset: forest; dressingAmount: 50" ></a-entity>
-        <a-plane position="0 -0.1 0 " rotation="-90 0 0" width="400" height="400" color="blue" static-body></a-plane>
+      <a-plane position="0 -0.1 0 " rotation="-90 0 0" width="400" height="400" color="blue" static-body></a-plane>
 
-      <!-- 360° Video Test <a-sky src="360_test.mp4"></a-sky> -->
+      <!-- Ozean -->
+      <a-ocean position="10 0.4 10"></a-ocean>
+      <a-tube path="5 0.2 5, 5 0.2 15" radius="0.4" material="color: grey"></a-tube>
+      <a-tube path="5 0.2 15, 15 0.2 15" radius="0.4" material="color: grey"></a-tube>
+      <a-tube path="15 0.2 15, 15 0.2 5" radius="0.4" material="color: grey"></a-tube>
+      <a-tube path="15 0.2 5, 5 0.2 5" radius="0.4" material="color: grey"></a-tube>
+
+      <a-box src ="#ziegel" position="5 0.5 5"  ></a-box>
+      <a-box src ="#ziegel" position="5 0.5 15" ></a-box>
+      <a-box src ="#ziegel" position="15 0.5 15" ></a-box>
+      <a-box src ="#ziegel" position="15 0.5 5" ></a-box>
+
+      <a-curve id="track1">
+        <a-curve-point position="5 0 0"></a-curve-point>
+        <a-curve-point position="0 1 5"></a-curve-point>
+        <a-curve-point position="5 0 0"></a-curve-point>
+      </a-curve>
+
+      <a-box alongpath="curve: #track1; loop: true; dur: 10000" scale="1 0.1 1"></a-box>
+
+        <a-sky src="360_test.mp4"></a-sky>
     </a-scene>
   </body>
 </html>
