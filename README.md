@@ -7,4 +7,8 @@ npm install -g live-server
 live-server
 
 #Standart Port 
-http://127.0.0.1:8080/	
+http://127.0.0.1:8080/
+
+Teleport:
+
+https://glitch.com/~aframe-teleport-controls-extra	
