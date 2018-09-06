@@ -2,37 +2,38 @@
   <head>
      <!-- a frame-->
     <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
-
      <!-- physics-->
      <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
-
       <!--curve-->
      <script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
-
       <!-- path-->
      <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
-
-      <!-- teleport-->
+      <!-- teleport -->
      <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
      <script src="https://rawgit.com/rdub80/aframe-teleport-extras/master/dist/aframe-teleport-extras.min.js"></script>
-     <script src="teleport.js" type="text/javascript"></script>
+     <!--interact with events -->
+     <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
+
+     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+
 
   <title>IC Web VR - Daniel Schneider</title>
   </head>
-  <body>
-  <!-- physics=debug:true; rain -->
-    <a-scene fog="type: linear; color: #AAB; far: 35; near: 0" stats sound="src: url(music.mp3); autoplay: true">
 
+  <body>
+  <!-- physics=debug:true; rain fog="type: linear; color: #D8D8D8; far: 1000; near: 0"-->
+    <a-scene stats sound="src: url(music.mp3); autoplay: true">
       <a-assets>
         <img id="ziegel" src="wall.jpg">
+        <img id="wall" src="wall1.jpg">
         <a-asset-item id="sword" src="models/scene.gltf"></a-asset-item>
       </a-assets>
 
       <!-- Camera and Teleport -->
-      <a-entity id="cameraRig" position="0 1.6 0" static-body >
-      <a-entity id="head" position="0 0 0" camera="userHeight:2" look-controls="pointerLockEnabled:true">
-      <a-cursor></a-cursor>
-      <a-light color="#fff" distance="5" intensity="0.7" type="point"></a-light>
+      <a-entity id="cameraRig" position="10 0 20" static-body >
+      <a-entity id="head" position="0 2 0" camera="userHeight:2" look-controls="pointerLockEnabled:true">
+      <a-cursor far="8"></a-cursor>
+      <a-light color="#fff" distance="20" intensity="0.7" type="point"></a-light>
       <a-entity position="0.1 -0.4 0"
           raycaster="objects: .selectable; far: 2"
           teleport-extras
@@ -48,33 +49,71 @@
       </a-entity>
     </a-entity>
 
+    <a-entity light="color:#AAA;type:ambient;intensity:0.5"></a-entity>
+    <a-entity light="type:directional; castShadow:true; intensity: 0.4;" position="20 20 10"></a-entity>
 
 
-      <a-box src ="#ziegel" id="tele" position="5 0 0" rotation="0 90 0" depth="4" height="0.2" width="4" static-body shadow="cast: true"></a-box>
-      <a-box src ="#ziegel" id="tele" position="10 1 0" rotation="0 90 0" depth="4" height="0.5" width="4" static-body shadow="cast: true"></a-box>
 
-      <a-entity light="color:#AAA;type:ambient;intensity:0.5"></a-entity>
-      <a-entity light="type:directional; castShadow:true; intensity: 0.4;" position="20 20 10"></a-entity>
+    <!--- Scene 1 --------------------------------------------------------------------------------------------------------->
+      <a-entity id="scene1">
 
-      <!--<a-entity id="floor" environment="preset: forest; dressingAmount: 50" shadow="receive: true" ></a-entity>-->
+<!--Teleporter-->
+      <a-text value="Click the red Cube to Load Level 1" position="5 4 -18" color="#000"></a-text>
+      <a-box color="red" position="6.5 3 -18" onclick="Level1()" event-set__enter="_event: mouseenter; color: green" event-set__leave="_event: mouseleave; color: red"> </a-box>
+
+<!--Jump Pads-->
+      <a-box src ="#ziegel" id="tele" position="10 0 20" rotation="0 90 0" depth="4" height="0.2" width="4" static-body shadow="cast: true"></a-box>
+      <a-box src ="#ziegel" id="tele" position="6 1 -10" rotation="0 90 0" depth="4" height="0.2" width="4" static-body shadow="cast: true"></a-box>
+      <a-box src ="#ziegel" id="tele" position="10 1 0" rotation="0 90 0" depth="4" height="0.2" width="4" static-body shadow="cast: true"></a-box>
 
 
-      <a-box  position="0 -0.1 0 " rotation="0 0 0" width="50" depth="50" height="0.1"  material="src: wiese.jpg; repeat: 25 25" static-body shadow="receive: true"></a-plane>
+<!--Walls-->
+<a-box src ="#wall" position="4.9 0 10" rotation="0 90 0" depth="0.2" height="8" width="11" static-body shadow="cast: true"></a-box>
+<a-box src ="#wall" position="15.1 0 10" rotation="0 90 0" depth="0.2" height="8" width="11" static-body shadow="cast: true"></a-box>
+
+<a-box position="10 0 10" rotation="90 0 0" depth="0.2" height="10" width="10" color="blue" ></a-box>
+
+<a-text value="You can only Teleport on Brick Blocks" position="8.2 4 15" color="#000"></a-text>
 
       <!-- Ozean -->
-      <a-ocean position="10 0 10"></a-ocean>
+      <a-entity environment="preset: yavapai; lighting: none;"></a-entity>
+      <a-ocean position="10 0.5 10"></a-ocean>
+
+      <a-box id="tele" src ="#ziegel" position="10 0.5 5"  width="10" material="src: wall.jpg; repeat: 10" shadow="cast: true"></a-box>
+      <a-box id="tele" src ="#ziegel" position="10 0.5 15" width="10"  material="src: wall.jpg; repeat: 10" shadow="cast: true"></a-box>
+
+      </a-entity>
+
+<!--- Scene 2 --------------------------------------------------------------------------------------------------------->
+      <a-entity id="scene2" visible="false" position="100 0 100">
+      <a-entity environment="preset: forest; lighting: none;"></a-entity>
+      <a-box id="tele" src ="#ziegel" position="0 0 0" depth="10" height="0.2" width="10" material="src: wall.jpg; repeat: 10 10" shadow="cast: true"></a-box>
+
+      </a-entity>
 
 
-      <a-box id="tele" src ="#ziegel" position="10 0 5"  width="10" material="src: wall.jpg; repeat: 10" shadow="cast: true"></a-box>
-      <a-box id="tele" src ="#ziegel" position="10 0 15" width="10"  material="src: wall.jpg; repeat: 10" shadow="cast: true"></a-box>
+    </a-scene>
 
-      <!-- Animation Curve -->
+    <script type="text/javascript">
+
+  function Level1() {
+    document.getElementById('scene1').setAttribute('visible', 'false')
+    document.getElementById('scene2').setAttribute('visible', 'true')
+    document.getElementById('cameraRig').object3D.position.set(100, 0, 100);
+  }
+  </script>
+
+  </body>
+</html>
+
+
+
+
+      <!-- Animation Curve
+
       <a-curve id="track1">
         <a-curve-point position="5 1 0"></a-curve-point>
         <a-curve-point position="0 2 5"></a-curve-point>
         <a-curve-point position="5 1 0"></a-curve-point>
       </a-curve>
-      <!-- <a-entity alongpath="curve: #track1; loop: true; dur: 10000" position="0 0 0" rotation="0s 90 0" scale="0.2 0.2 0.2" gltf-model="#sword" shadow="cast: true; receive: true"></a-entity>-->
-    </a-scene>
-  </body>
-</html>
+     <a-entity alongpath="curve: #track1; loop: true; dur: 10000" position="0 0 0" rotation="0s 90 0" scale="0.2 0.2 0.2" gltf-model="#sword" shadow="cast: true; receive: true"></a-entity>-->
