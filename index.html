@@ -1,119 +1,192 @@
 <html>
   <head>
-     <!-- a frame-->
-    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+     <!-- a frame main-->
+     <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
      <!-- physics-->
      <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
-      <!--curve-->
-     <script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
-      <!-- path-->
-     <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
       <!-- teleport -->
      <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
      <script src="https://rawgit.com/rdub80/aframe-teleport-extras/master/dist/aframe-teleport-extras.min.js"></script>
      <!--interact with events -->
      <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
-
+     <!-- Environment -->
      <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+     <!-- google poly modell loader -->
+     <script src="https://cdn.rawgit.com/archilogic-com/aframe-gblock/6498b71d/dist/gblock.js"></script>
 
 
   <title>IC Web VR - Daniel Schneider</title>
+
   </head>
 
   <body>
   <!-- physics=debug:true; rain fog="type: linear; color: #D8D8D8; far: 1000; near: 0"-->
-    <a-scene stats sound="src: url(music.mp3); autoplay: true">
+    <a-scene stats>
       <a-assets>
         <img id="ziegel" src="wall.jpg">
         <img id="wall" src="wall1.jpg">
-        <a-asset-item id="sword" src="models/scene.gltf"></a-asset-item>
+        <a-asset-item id="door-obj" src="models/door/door.obj"></a-asset-item>
+        <a-asset-item id="rock" src="models/rock/rock.obj"></a-asset-item>
+        <a-asset-item id="rock-mtl" src="models/rock/rock.mtl"></a-asset-item>
+        <a-asset-item id="rat" src="models/rat/scene.gltf"></a-asset-item>
+        <a-asset-item id="cactus" src="models/cactus/scene.gltf"></a-asset-item>
+        <a-asset-item id="rockset_mtl" src="models/rocks/RockSet.mtl"></a-asset-item>
+        <a-asset-item id="rockset" src="models/rocks/RockSet.obj"></a-asset-item>
+        <a-asset-item id="weed" src="models/tumbleweed/scene.gltf"></a-asset-item>
       </a-assets>
 
       <!-- Camera and Teleport -->
-      <a-entity id="cameraRig" position="10 0 20" static-body >
-      <a-entity id="head" position="0 2 0" camera="userHeight:2" look-controls="pointerLockEnabled:true">
-      <a-cursor far="8"></a-cursor>
-      <a-light color="#fff" distance="20" intensity="0.7" type="point"></a-light>
-      <a-entity position="0.1 -0.4 0"
-          raycaster="objects: .selectable; far: 2"
-          teleport-extras
-          teleport-controls=
-            "cameraRig: #cameraRig;
-             teleportOrigin: #head;
-             startEvents:starttouch;
-             endEvents:endtouch;
-             curveShootingSpeed:20;
-             hitCylinderRadius:0.3;
-             collisionEntities: #tele">
+      <a-entity id="cameraRig" position="10 4 20">
+        <a-entity id="head" position="0 2 0" camera="" look-controls="pointerLockEnabled:true">
+            <a-cursor far="30"></a-cursor>
+              <a-light distance="20" intensity="0.4" type="point"></a-light>
+                <a-entity position="0.1 -0.4 0"
+                  raycaster="objects: .selectable; far: 2"
+                  teleport-extras
+                  teleport-controls=
+                    "cameraRig: #cameraRig;
+                    teleportOrigin: #head;
+                    startEvents:starttouch;
+                    endEvents:endtouch;
+                    curveShootingSpeed:30;
+                    hitCylinderRadius:0.3;
+                    collisionEntities: #tele">
+                  </a-entity>
         </a-entity>
       </a-entity>
-    </a-entity>
 
-    <a-entity light="color:#AAA;type:ambient;intensity:0.5"></a-entity>
-    <a-entity light="type:directional; castShadow:true; intensity: 0.4;" position="20 20 10"></a-entity>
+<a-entity light="color:#E7CCA2;type:ambient;intensity:0.35"></a-entity>
 
 
+<!--- Scene 1 ------->
+<a-entity id="scene1">
 
-    <!--- Scene 1 --------------------------------------------------------------------------------------------------------->
-      <a-entity id="scene1">
+<a-box position="10 5 -10 " onclick="Level1()"></a-box>
 
-<!--Teleporter-->
-      <a-text value="Click the red Cube to Load Level 1" position="5 4 -18" color="#000"></a-text>
-      <a-box color="red" position="6.5 3 -18" onclick="Level1()" event-set__enter="_event: mouseenter; color: green" event-set__leave="_event: mouseleave; color: red"> </a-box>
+<!--environment-->
+<a-entity id="start_env" shadow="receive: true" environment="preset: arches; lighting: none; groundYScale: 2; dressingAmount: 5;"></a-entity>
+
+<!--light scene 1-->
+<a-entity light="castShadow:true;intensity:0.5;shadowCameraTop:45;shadowCameraBottom:-75;shadowCameraRight:35;shadowCameraLeft:-50;shadowMapHeight:2048;shadowMapWidth:2048;" position="-3.25 28.75 0"></a-entity>
+<a-entity light="intensity:0.3;shadowCameraTop:20;shadowCameraBottom:-20;shadowCameraRight:20;shadowCameraLeft:-20;type:spot;color:#ffffff;angle:30.89;shadowBias:3.31;penumbra:1" position="5.6371158664822065 25.026211809598824 -17.79257905802368" rotation="-43.75 0.96 0"></a-entity>
+
+<!-- Text Start-->
+<a-entity geometry="primitive:plane;width:11" material="color:f0e2ae" text="value:You can only Teleport at the Brick Platforms;width:9.68;align:center;color:#000000;letterSpacing:0.23;wrapCount:35.06" position="9.5 0.5 15.51"></a-entity>
 
 <!--Jump Pads-->
-      <a-box src ="#ziegel" id="tele" position="10 0 20" rotation="0 90 0" depth="4" height="0.2" width="4" static-body shadow="cast: true"></a-box>
-      <a-box src ="#ziegel" id="tele" position="6 1 -10" rotation="0 90 0" depth="4" height="0.2" width="4" static-body shadow="cast: true"></a-box>
-      <a-box src ="#ziegel" id="tele" position="10 1 0" rotation="0 90 0" depth="4" height="0.2" width="4" static-body shadow="cast: true"></a-box>
+<a-box src="#ziegel" id="tele" position="10 0.1 20" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow=""  geometry=""></a-box>
+<a-box src="#ziegel" id="tele" position="6.5 5 -15.645" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" material="" geometry=""></a-box>
+<a-box src="#ziegel" id="tele" position="20 1 19.6" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" material="" geometry=""></a-box>
+<a-box src="#ziegel" id="tele" position="24.2 1.9 11.3" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" material="" geometry=""></a-box>
+<a-box src="#ziegel" id="tele" position="27.4 2.9 0.4" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" material="" geometry=""></a-box>
+<a-box src="#ziegel" id="tele" position="16 4 -1.8" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" material="" geometry=""></a-box>
+<a-box src="#ziegel" id="tele" position="6.5 5 -8" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" material="" geometry=""></a-box>
+
+<!--box for doors -->
+<a-box id="tele" position="7 6 -32" rotation="0 90 0" height="0.3" static-body="sphereRadius:NaN" shadow="" geometry="depth:20;width:20" material="src:wall.jpg;repeat:10 10"></a-box>
+<a-box src="#ziegel" position="7 2.65 -21.97" rotation="90 0 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" geometry="depth:7;height:0.1;width:20" material=""></a-box>
+<a-box src="#ziegel" position="7 7.082964807838259 -42.03" rotation="90 0 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" geometry="depth:15;height:0.1;width:20" material=""></a-box>
+<a-box src="#ziegel" position="-3.03 2.65 -32" rotation="90 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" geometry="depth:7;height:0.1;width:20" material=""></a-box>
+<a-box src="#ziegel" position="17.03 2.65 -32" rotation="90 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" geometry="depth:7;height:0.1;width:20" material=""></a-box>
+
+<!--Door Info Text-->
+<a-entity geometry="height:6;width:12" material="color:#f0e2ae" text="value:On every Door is a Statement. It may be true or false.
+If a Statement on a Door is true, then all Statements on that Door are true. If a Statement on a Door is false, then all Statements on that Door are false.
+Exactly one Door is correct!;width:11.6;align:center;color:#000000;letterSpacing:-2.92;wrapCount:35.27;tabSize:0;lineHeight:70;opacity:2;zOffset:0.51" rotation="-90 0 0" position="6.685 5.753450470240373 -29.103"></a-entity>
+
+<!--Doors-->
+<a-entity position="3.4 6.16 -23.8">
+  <!--Green Door-->
+       <a-obj-model shadow="" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200" event-set__enter="_event: mouseenter; color: #008e00" event-set__leave="_event: mouseleave; color: #00b200" onclick="Level2()" material="" obj-model=""></a-obj-model>
+       <a-entity geometry="height:1.41;width:8.91;depth:0.34" material="color:#f0e2ae" text="value:This Door leads to Happiness the other Door leads to Death!;width:9;align:center;color:#000000;letterSpacing:1.55;wrapCount:34.94;opacity:2;zOffset:0.181" position="-1.11 7.062 -18.01"></a-entity>
+  <!--Red Door-->
+       <a-obj-model shadow="" src="#door-obj" position="8 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000" event-set__enter="_event: mouseenter; color: #8e0000" event-set__leave="_event: mouseleave; color: #b20000" onclick="Level1()" material="" obj-model=""></a-obj-model>
+       <a-entity geometry="height:1.41;width:8.91;depth:0.34" material="color:#f0e2ae" text="value:One of these Doors leads to Happiness, the other leads to Death;width:9;align:center;color:#000000;letterSpacing:1.55;wrapCount:34.94;opacity:2;zOffset:0.181" position="8.16 7.062 -18.01"></a-entity>
+</a-entity>
+
+<!-- Lava Pool-->
+<a-box position="9.5 0 10" rotation="90 0 0" depth="0.2" height="10" width="10" color="black" ></a-box>
+<a-box position="9.5 0.5 15" width="10" material="src:wall1.jpg;repeat:4 1" shadow="" geometry="width:11"></a-box>
+<a-box position="9.5 0.5 5" width="10" material="src:wall1.jpg;repeat:4 1" shadow="" geometry="width:11"></a-box>
+<a-box position="14.5 0.5 10" rotation="0 90 0" material="src:wall1.jpg;repeat:4 1" shadow="" geometry="width:9"></a-box>
+<a-box position="4.5 0.5 10" rotation="0 90 0" material="src:wall1.jpg;repeat:4 1" shadow="" geometry="width:9"></a-box>
+<a-entity light="color:#ff3328;type:point;intensity:3.41;distance:10.43;groundColor:#ffffff;decay:0.62" position="9.64 0.5 10"></a-entity>
+<a-ocean position="10 0.5 10" color="#8b0000" sound="src: url(music.mp3); autoplay: true; volume: 0.3;"></a-ocean>
+
+<!-- Big Rock -->
+<a-entity obj-model="obj: #rock; mtl: #rock-mtl" shadow="" position="-9.1 -0.2 8.7" rotation="0 180 0" scale="5 5 5"></a-entity>
+
+<!-- Rat + Animation -->
+<a-entity gltf-model="#rat" shadow="cast: true" scale="0.025 0.025 0.025" position="-200 1 -5" animation-mixer="duration:8" sound="src: url(rat.wav); autoplay: true; loop: true; rolloffFactor:2.5;">
+  <a-animation attribute="position" dur="3500" fill="forwards" from="-80 1 -5" to="0 1 -5" delay="12000" easing="ease-out"></a-animation>
+  <a-animation attribute="position" dur="3500" fill="forwards" from="0 1 -5" to="80 1.5 -5" delay="20000" easing="linear"></a-animation>
+</a-entity>
+
+<!-- Tumbleweed + Animation -->
+<a-entity gltf-model="#weed" shadow="" scale="0.004 0.004 0.004" position="28 -3 -75" sound="src: url(weed.mp3); autoplay: true; loop: true; rolloffFactor:1.5;">
+  <a-animation attribute="position" dur="25000" fill="forwards" from="28 1.2 -75" to="28 1.4 85" delay="3000" easing="linear"></a-animation>
+  <a-animation attribute="position" dur="25000" fill="forwards" from="-20 1.2 -75" to="-20 1.4 100" delay="25000" easing="linear"></a-animation>
+  <a-animation attribute="position" dur="25000" fill="forwards" from="35 1.2 -75" to="35 1.4 85" delay="50000" easing="linear"></a-animation>
+  <a-animation attribute="rotation" dur="2500" repeat="indefinite" to="360 0 360" easing="linear"></a-animation>
+</a-entity>
+
+<!-- Cactus -->
+<a-entity gltf-model="models/cactus/scene.gltf" shadow="" position="34.55244877549665 1.5667267221253454 16.135808191088454" rotation="0.08999999999999997 -44.78 -1.64" scale="0.86 1.4 0.9299999999999999"></a-entity>
+<a-entity gltf-model="models/cactus/scene.gltf" shadow="" position="19.158 0.567 -30.369" rotation="-2.26 -100.84 -0.95" scale="1.52 1.75 1.34"></a-entity>
+<a-entity gltf-model="models/cactus/scene.gltf" shadow="" position="-20.745949282455122 0.647449055804364 22.762635570677595" rotation="2.3000000000000003 -152.71 -10.26" scale="0.6699999999999999 0.81 0.84"></a-entity>
+
+<!-- Small Rocks -->
+<a-entity obj-model="obj:models/rocks/RockSet.obj;mtl:models/rocks/RockSet.mtl" shadow="" position="-29.3 -0.2 -25.4" rotation="0.61 146.52 0" scale="1.8 2 2"></a-entity>
+
+</a-entity>
 
 
-<!--Walls-->
-<a-box src ="#wall" position="4.9 0 10" rotation="0 90 0" depth="0.2" height="8" width="11" static-body shadow="cast: true"></a-box>
-<a-box src ="#wall" position="15.1 0 10" rotation="0 90 0" depth="0.2" height="8" width="11" static-body shadow="cast: true"></a-box>
+<!--- Scene 2 (Level 1)--------------------------------------------------------------------------------------------------------->
+<a-entity id="scene2" visible="false" position="50 0 50">
+  <a-box position="10 7 1 " onclick="Level0()"></a-box>
+  <a-entity id="environment_1" environment="preset: none; dressingAmount: 5; skyType:atmosphere;"></a-entity>
+  <a-box src="#ziegel" id="tele" position="5 1 5" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow=""  geometry=""></a-box>
+  <a-box src="#ziegel" id="tele" position="20 2 20" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" material="" geometry=""></a-box>
+</a-entity>
 
-<a-box position="10 0 10" rotation="90 0 0" depth="0.2" height="10" width="10" color="blue" ></a-box>
-
-<a-text value="You can only Teleport on Brick Blocks" position="8.2 4 15" color="#000"></a-text>
-
-      <!-- Ozean -->
-      <a-entity environment="preset: yavapai; lighting: none;"></a-entity>
-      <a-ocean position="10 0.5 10"></a-ocean>
-
-      <a-box id="tele" src ="#ziegel" position="10 0.5 5"  width="10" material="src: wall.jpg; repeat: 10" shadow="cast: true"></a-box>
-      <a-box id="tele" src ="#ziegel" position="10 0.5 15" width="10"  material="src: wall.jpg; repeat: 10" shadow="cast: true"></a-box>
-
-      </a-entity>
-
-<!--- Scene 2 --------------------------------------------------------------------------------------------------------->
-      <a-entity id="scene2" visible="false" position="100 0 100">
-      <a-entity environment="preset: forest; lighting: none;"></a-entity>
+<!--- Scene 3 (Hölle)--------------------------------------------------------------------------------------------------------->
+<a-entity id="scene3" visible="false" position="200 0 200">
+      <a-entity light="castShadow:true;intensity:0.2;shadowCameraTop:75;shadowCameraBottom:-75;shadowCameraRight:75;shadowCameraLeft:-75;shadowMapHeight:2048;shadowMapWidth:2048;" position="0 50 0"></a-entity>
+      <a-entity gblock="https://poly.google.com/view/eW2LgmMV94J" scale="11 11 11" position="25.806 14.071 -6.306" rotation="0 -38.73194695084365 0" shadow="cast: true"></a-entity>
+      <a-plane rotation="-90 0 0" height="100" width="100" shadow="receive: true"></a-plane>
       <a-box id="tele" src ="#ziegel" position="0 0 0" depth="10" height="0.2" width="10" material="src: wall.jpg; repeat: 10 10" shadow="cast: true"></a-box>
+</a-entity>
 
-      </a-entity>
+</a-scene>
 
 
-    </a-scene>
+<script type="text/javascript">
+function Level0() {
+  document.getElementById('cameraRig').object3D.position.set(20, 4, 10);
+  document.getElementById('scene1').setAttribute('visible', 'true');
+  document.getElementById('scene2').setAttribute('visible', 'false');
+  document.getElementById('start_env').setAttribute('environment', 'preset: arches;');
+  document.getElementById('start_env').setAttribute('environment', 'dressingAmount: 5;');
+  document.getElementById('environment_1').setAttribute('environment', 'preset: none;');
+}
 
-    <script type="text/javascript">
 
   function Level1() {
-    document.getElementById('scene1').setAttribute('visible', 'false')
-    document.getElementById('scene2').setAttribute('visible', 'true')
-    document.getElementById('cameraRig').object3D.position.set(100, 0, 100);
-  }
-  </script>
+    document.getElementById('cameraRig').object3D.position.set(50, 4, 50);
+    document.getElementById('scene1').setAttribute('visible', 'false');
+    document.getElementById('scene2').setAttribute('visible', 'true');
+    document.getElementById('start_env').setAttribute('environment', 'preset: none;');
+    document.getElementById('environment_1').setAttribute('environment', 'preset: forest;');
+    document.getElementById('environment_1').setAttribute('environment', 'dressingAmount: 1;');
 
+  }
+
+  function Level2() {
+    document.getElementById('scene1').setAttribute('visible', 'false');
+    document.getElementById('scene3').setAttribute('visible', 'true');
+    document.getElementById('cameraRig').object3D.position.set(200, 2, 200);
+  }
+
+  </script>
   </body>
 </html>
-
-
-
-
-      <!-- Animation Curve
-
-      <a-curve id="track1">
-        <a-curve-point position="5 1 0"></a-curve-point>
-        <a-curve-point position="0 2 5"></a-curve-point>
-        <a-curve-point position="5 1 0"></a-curve-point>
-      </a-curve>
-     <a-entity alongpath="curve: #track1; loop: true; dur: 10000" position="0 0 0" rotation="0s 90 0" scale="0.2 0.2 0.2" gltf-model="#sword" shadow="cast: true; receive: true"></a-entity>-->
