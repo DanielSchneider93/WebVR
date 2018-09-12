@@ -1,0 +1,53 @@
+<html>
+  <head>
+     <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+     <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
+     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+  </head>
+
+<body>
+<a-scene>
+<a-entity environment="preset: arches; dressingAmount: 5;"></a-entity>
+
+
+<a-entity id="cameraRig" position="10 4 10">
+  <a-entity id="head" position="0 2 0" camera="" look-controls="pointerLockEnabled:true">
+    <a-cursor far="50"></a-cursor>
+  </a-entity>
+</a-entity>
+</a-entity>
+
+
+<a-entity id="cameraRig1" position="30 4 30">
+  <a-entity id="head1" position="0 2 0" camera="" look-controls="pointerLockEnabled:true">
+    <a-cursor far="50"></a-cursor>
+  </a-entity>
+</a-entity>
+
+<a-box color="red" position="5 1 5" depth="4" height="4" width="4" onClick="goToGreen()"></a-box>
+<a-box color="green" position="25 1 25" depth="4" height="4" width="4" onClick="goToRed()"></a-box>
+
+</a-scene>
+
+<script type="text/javascript">
+function goToGreen() {
+
+  var firstCamera = document.querySelector('#head');
+  firstCamera.setAttribute('camera', 'active', false);
+
+  var secondCamera = document.querySelector('#head1');
+  secondCamera.setAttribute('camera', 'active', true);
+}
+
+function goToRed() {
+
+  var firstCamera = document.querySelector('#head');
+  firstCamera.setAttribute('camera', 'active', true);
+
+  var secondCamera = document.querySelector('#head1');
+  secondCamera.setAttribute('camera', 'active', false);
+}
+
+</script>
+</body>
+</html>
