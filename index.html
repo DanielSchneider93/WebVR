@@ -1,7 +1,7 @@
 <html>
   <head>
      <!-- a frame main-->
-     <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+     <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
      <!-- physics-->
      <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
       <!-- teleport -->
@@ -15,11 +15,74 @@
      <script src="https://cdn.rawgit.com/archilogic-com/aframe-gblock/6498b71d/dist/gblock.js"></script>
 
 
+
   <title>IC Web VR - Daniel Schneider</title>
 
   </head>
 
   <body>
+
+    <script type="text/javascript">
+
+      function Level1() {
+        document.getElementById('scene1').setAttribute('visible', 'false');
+        document.getElementById('scene2').setAttribute('visible', 'true');
+        document.getElementById('start_env').setAttribute('environment', 'preset: none;');
+        document.getElementById('environment_1').setAttribute('environment', 'preset: contact;');
+        document.getElementById('environment_1').setAttribute('environment', 'dressingAmount: 4;');
+
+        var secondCamera = document.querySelector('#head1');
+        secondCamera.setAttribute('camera', 'active', true);
+      }
+
+      function Hell() {
+        document.getElementById('scene1').setAttribute('visible', 'false');
+        document.getElementById('hell').setAttribute('visible', 'true');
+
+        var standartCam = document.querySelector('#head');
+        standartCam.setAttribute('camera', 'active', false);
+        var hellCamera = document.querySelector('#head2');
+        hellCamera.setAttribute('camera', 'active', true);
+
+        var hellanim = document.querySelector('#hellstart');
+        hellanim.emit('startafterteleport');
+
+        var hellanim1 = document.querySelectorAll('#hellstart1'), i;
+        for (i = 0; i < hellanim1.length; ++i) {
+          hellanim1[i].emit('startafterteleport');
+        }
+
+        var light2 = document.querySelector('#animationEndHell');
+        light2.addEventListener('animationend', function(){
+          backToLvl1();
+          rollBack();
+        });
+
+        var hellsound = document.querySelector('#you_dead');
+        hellsound.components.sound.playSound();
+      }
+
+      function backToLvl1(){
+        document.getElementById('scene1').setAttribute('visible', 'true');
+        document.getElementById('hell').setAttribute('visible', 'false');
+        var standartCam = document.querySelector('#head');
+        standartCam.setAttribute('camera', 'active', true);
+        var hellCamera = document.querySelector('#head2');
+        hellCamera.setAttribute('camera', 'active', false);
+      }
+
+      function rollBack(){
+        var hellanim1 = document.querySelectorAll('#hellstart'), i;
+        for (i = 0; i < hellanim1.length; ++i) {
+          hellanim1[i].emit('goBack');
+        }
+        var hellanim1 = document.querySelectorAll('#hellstart1'), i;
+        for (i = 0; i < hellanim1.length; ++i) {
+          hellanim1[i].emit('goBack');
+        }
+      }
+
+      </script>
   <!-- physics=debug:true; rain fog="type: linear; color: #D8D8D8; far: 1000; near: 0"-->
     <a-scene stats>
       <a-assets>
@@ -35,9 +98,8 @@
         <a-asset-item id="weed" src="models/tumbleweed/scene.gltf"></a-asset-item>
       </a-assets>
 
-
+<!-- global light -->
 <a-entity light="color:#E7CCA2;type:ambient;intensity:0.35"></a-entity>
-
 
 <!--- Scene 1 = Lvl 0------->
 <a-entity id="scene1">
@@ -45,7 +107,7 @@
 <!-- Camera and Teleport Lvl 0 -->
 <a-entity id="cameraRig" position="10 4 20">
   <a-entity id="head" position="0 2 0" camera="" look-controls="pointerLockEnabled:true">
-    <a-cursor far="30"></a-cursor>
+    <a-cursor far="50"></a-cursor>
       <a-light distance="20" intensity="0.4" type="point"></a-light>
         <a-entity position="0.1 -0.4 0"
           raycaster="objects: .selectable; far: 2"
@@ -63,7 +125,7 @@
 </a-entity>
 
 <!--environment-->
-<a-entity id="start_env" shadow="receive: true" environment="preset: arches; lighting: none; groundYScale: 2; dressingAmount: 5;"></a-entity>
+<a-entity id="start_env" shadow="receive: true" environment="preset: arches; lighting: none; groundYScale: 4; dressingAmount: 5; ground:canyon;"></a-entity>
 
 <!--light scene 1-->
 <a-entity light="castShadow:true;intensity:0.5;shadowCameraTop:45;shadowCameraBottom:-75;shadowCameraRight:35;shadowCameraLeft:-50;shadowMapHeight:2048;shadowMapWidth:2048;" position="-3.25 28.75 0"></a-entity>
@@ -89,9 +151,7 @@
 <a-box src="#ziegel" position="17.03 2.65 -32" rotation="90 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="" geometry="depth:7;height:0.1;width:20" material=""></a-box>
 
 <!--Door Info Text-->
-<a-entity geometry="height:6;width:12" material="color:#f0e2ae" text="value:On every Door is a Statement. It may be true or false.
-If a Statement on a Door is true, then all Statements on that Door are true. If a Statement on a Door is false, then all Statements on that Door are false.
-Exactly one Door is correct!;width:11.6;align:center;color:#000000;letterSpacing:-2.92;wrapCount:35.27;tabSize:0;lineHeight:70;opacity:2;zOffset:0.51" rotation="-90 0 0" position="6.685 5.753450470240373 -29.103"></a-entity>
+<a-entity geometry="height:6;width:12" material="color:#f0e2ae" text="value:On every Door is a Statement. It may be true or false. If a Statement on a Door is true, then all Statements on that Door are true.              If a Statement on a Door is false, then all Statements on that Door are false.         Exactly one Door is correct!;width:11.42;align:center;color:#000000;letterSpacing:0.2100000000000001;wrapCount:35.410000000000004;tabSize:2.2199999999999998;lineHeight:67.26;opacity:2;zOffset:0.51" rotation="-90 0 0" position="6.685 5.753450470240373 -29.103"></a-entity>
 
 <!--Doors-->
 <a-entity position="3.4 6.16 -23.8">
@@ -110,19 +170,19 @@ Exactly one Door is correct!;width:11.6;align:center;color:#000000;letterSpacing
 <a-box position="14.5 0.5 10" rotation="0 90 0" material="src:wall1.jpg;repeat:4 1" shadow="" geometry="width:9"></a-box>
 <a-box position="4.5 0.5 10" rotation="0 90 0" material="src:wall1.jpg;repeat:4 1" shadow="" geometry="width:9"></a-box>
 <a-entity light="color:#ff3328;type:point;intensity:3.41;distance:10.43;groundColor:#ffffff;decay:0.62" position="9.64 0.5 10"></a-entity>
-<a-ocean position="10 0.5 10" color="#8b0000" sound="src: url(music.mp3); autoplay: true; volume: 0.3;" onClick="Hell()"></a-ocean>
+<a-ocean position="10 0.5 10" density="5" color="#8b0000" sound="src: url(sounds/music.mp3); autoplay: true; volume: 0.3;" onClick="Hell()"></a-ocean>
 
 <!-- Big Rock -->
 <a-entity obj-model="obj: #rock; mtl: #rock-mtl" shadow="" position="-9.1 -0.2 8.7" rotation="0 180 0" scale="5 5 5"></a-entity>
 
 <!-- Rat + Animation -->
-<a-entity gltf-model="#rat" shadow="cast: true" scale="0.025 0.025 0.025" position="-200 1 -5" animation-mixer="duration:8" sound="src: url(rat.wav); autoplay: true; loop: true; rolloffFactor:2.5;">
+<a-entity gltf-model="#rat" scale="0.025 0.025 0.025" position="-200 1 -5" animation-mixer="duration:8" sound="src: url(sounds/rat.wav); autoplay:true; loop:true; rolloffFactor: 2.5;">
   <a-animation attribute="position" dur="3500" fill="forwards" from="-80 1 -5" to="0 1 -5" delay="12000" easing="ease-out"></a-animation>
   <a-animation attribute="position" dur="3500" fill="forwards" from="0 1 -5" to="80 1.5 -5" delay="20000" easing="linear"></a-animation>
 </a-entity>
 
 <!-- Tumbleweed + Animation -->
-<a-entity gltf-model="#weed" shadow="" scale="0.004 0.004 0.004" position="28 -3 -75" sound="src: url(weed.mp3); autoplay: true; loop: true; rolloffFactor:1.5;">
+<a-entity gltf-model="#weed" scale="0.004 0.004 0.004" position="28 -3 -75" sound="src: url(sounds/weed.mp3); autoplay: true; loop: true; rolloffFactor:1.5;">
   <a-animation attribute="position" dur="25000" fill="forwards" from="28 1.2 -75" to="28 1.4 85" delay="3000" easing="linear"></a-animation>
   <a-animation attribute="position" dur="25000" fill="forwards" from="-20 1.2 -75" to="-20 1.4 100" delay="25000" easing="linear"></a-animation>
   <a-animation attribute="position" dur="25000" fill="forwards" from="35 1.2 -75" to="35 1.4 85" delay="50000" easing="linear"></a-animation>
@@ -132,7 +192,6 @@ Exactly one Door is correct!;width:11.6;align:center;color:#000000;letterSpacing
 <!-- Cactus -->
 <a-entity gltf-model="models/cactus/scene.gltf" shadow="" position="34.55244877549665 1.5667267221253454 16.135808191088454" rotation="0.08999999999999997 -44.78 -1.64" scale="0.86 1.4 0.9299999999999999"></a-entity>
 <a-entity gltf-model="models/cactus/scene.gltf" shadow="" position="19.158 0.567 -30.369" rotation="-2.26 -100.84 -0.95" scale="1.52 1.75 1.34"></a-entity>
-<a-entity gltf-model="models/cactus/scene.gltf" shadow="" position="-20.745949282455122 0.647449055804364 22.762635570677595" rotation="2.3000000000000003 -152.71 -10.26" scale="0.6699999999999999 0.81 0.84"></a-entity>
 
 <!-- Small Rocks -->
 <a-entity obj-model="obj:models/rocks/RockSet.obj;mtl:models/rocks/RockSet.mtl" shadow="" position="-29.3 -0.2 -25.4" rotation="0.61 146.52 0" scale="1.8 2 2"></a-entity>
@@ -193,7 +252,13 @@ Exactly one Door is correct!;width:11.6;align:center;color:#000000;letterSpacing
   </a-entity>
 </a-entity>
 
-<a-entity light="color:#800909;type:point;intensity:6;distance:20;decay:0.36;groundColor:#000000" position="0 10 0"></a-entity>
+<a-light id="hellstart" color="#800909" type="point" intensity="5" distance="25" decay="0.36" groundColor="#000000" position="0 10 0">
+  <a-animation begin="startafterteleport" attribute="intensity" from="5" to="100000" delay="4000" dur="7000"></a-animation>
+  <a-animation begin="goBack" attribute="intensity" from="100000" to="5" dur="10"></a-animation>
+  <a-animation id="animationEndHell" begin="startafterteleport" attribute="color" from="#800909" to="white" delay="4000" dur="5500"></a-animation>
+  <a-animation begin="goBack" attribute="color" from="white" to="#800909" dur="10"></a-animation>
+</a-light>
+
 <!-- Hellfire Box -->
 <a-plane rotation="-90 0 0"  geometry="height:25;width:25" color="#800909"></a-plane>
 <a-plane rotation="-180 90 0" position="11.5 12 0" geometry="height:25;width:25" color="#f27d0c"></a-plane>
@@ -204,61 +269,47 @@ Exactly one Door is correct!;width:11.6;align:center;color:#000000;letterSpacing
 
 <!-- Hellfire -->
 <a-entity id="hellfire">
-    <a-ocean position="0 1 0" color="#8b0000" scale="2 2 2" ocean=""></a-ocean>
+    <a-ocean id="hellstart1" density="15" position="0 1 0" color="#8b0000" scale="2 2 2" speed="5">
+    <a-animation begin="startafterteleport" attribute="position" from="0 1 0" to="0 -1 0" delay="6000" dur="5000" ></a-animation>
+    <a-animation begin="goBack" attribute="position" to="0 1 0" from="0 -1 0" dur="10" ></a-animation>
+  </a-ocean>
     <a-entity rotation="180 90 0">
-        <a-ocean position="0 -19 0" color="#8b0000" scale="2 2 2" ocean=""></a-ocean>
+        <a-ocean id="hellstart1" density="15" position="0 -19 0" color="#8b0000" scale="2 2 2" speed="5">
+  <a-animation begin="startafterteleport" attribute="position" from="0 -19 0" to="0 -26 0" delay="6000" dur="5000"></a-animation>
+  <a-animation begin="goBack" attribute="position" to="0 -19 0" from="0 -26 0" dur="10" ></a-animation>
+        </a-ocean>
       </a-entity>
       <a-entity rotation="90 90 0">
-        <a-ocean position="0 -9.5 -10" color="#8b0000" scale="2 2 2" ocean=""></a-ocean>
+        <a-ocean id="hellstart1" density="15" position="0 -9.5 -10" color="#8b0000" scale="2 2 2" speed="5">
+  <a-animation begin="startafterteleport" attribute="position" from="0 -9.5 -10" to="0 -14 -10" delay="6000" dur="5000"></a-animation>
+  <a-animation begin="goBack" attribute="position" to="0 -9.5 -10" from="0 -14 -10" dur="10"></a-animation>
+        </a-ocean>
       </a-entity>
       <a-entity rotation="-90 90 0">
-        <a-ocean position="0 -9.5 10" color="#8b0000" scale="2 2 2" ocean=""></a-ocean>
+        <a-ocean id="hellstart1" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5" >
+  <a-animation begin="startafterteleport" attribute="position" from="0 -9.5 10" to="0 -14 10" delay="6000" dur="5000"></a-animation>
+  <a-animation begin="goBack" attribute="position" to="0 -9.5 10" from="0 -14 10" dur="10"></a-animation>
+        </a-ocean>
       </a-entity>
       <a-entity rotation="-90 0 0">
-        <a-ocean position="0 -9.5 10" color="#8b0000" scale="2 2 2" ocean=""></a-ocean>
+        <a-ocean id="hellstart1" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5">
+  <a-animation  begin="startafterteleport" attribute="position" from="0 -9.5 10" to="0 -14 10" delay="6000" dur="5000"></a-animation>
+    <a-animation begin="goBack" attribute="position" to="0 -9.5 10" from="0 -14 10" dur="10"></a-animation>
+        </a-ocean>
       </a-entity>
       <a-entity rotation="-90 -180 0">
-        <a-ocean position="0 -9.5 10" color="#8b0000" scale="2 2 2" ocean=""></a-ocean>
+        <a-ocean id="hellstart1" density="15"position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5">
+  <a-animation begin="startafterteleport" attribute="position" from="0 -9.5 10" to="0 -14 10" delay="6000" dur="3000"></a-animation>
+  <a-animation begin="goBack" attribute="position" to="0 -9.5 10" from="0 -14 10" dur="10"></a-animation>
+        </a-ocean>
       </a-entity>
 </a-entity>
 
+<!-- Hellfire Sound -->
+<a-entity id="you_dead" sound="src: url(sounds/you_dead.mp3); autoplay:false; loop:false;"></a-entity>
 
 </a-entity>
 </a-scene>
 
-
-<script type="text/javascript">
-function Level0() {
-  document.getElementById('scene1').setAttribute('visible', 'true');
-  document.getElementById('scene2').setAttribute('visible', 'false');
-  document.getElementById('start_env').setAttribute('environment', 'preset: arches;');
-  document.getElementById('start_env').setAttribute('environment', 'dressingAmount: 5;');
-  document.getElementById('environment_1').setAttribute('environment', 'preset: none;');
-}
-
-
-  function Level1() {
-    document.getElementById('scene1').setAttribute('visible', 'false');
-    document.getElementById('scene2').setAttribute('visible', 'true');
-    document.getElementById('start_env').setAttribute('environment', 'preset: none;');
-    document.getElementById('environment_1').setAttribute('environment', 'preset: contact;');
-    document.getElementById('environment_1').setAttribute('environment', 'dressingAmount: 4;');
-
-    var secondCamera = document.querySelector('#head1');
-    secondCamera.setAttribute('camera', 'active', true);
-  }
-
-  function Hell() {
-    document.getElementById('scene1').setAttribute('visible', 'false');
-    document.getElementById('hell').setAttribute('visible', 'true');
-
-    var standartCam = document.querySelector('#head');
-    standartCam.setAttribute('camera', 'active', false);
-
-    var hellCamera = document.querySelector('#head2');
-    hellCamera.setAttribute('camera', 'active', true);
-  }
-
-  </script>
   </body>
 </html>
