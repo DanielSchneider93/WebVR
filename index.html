@@ -24,6 +24,7 @@
 
     <script type="text/javascript">
 
+
       function Level2() {
 
         //Show and Hide the Scenes
@@ -51,7 +52,17 @@
       }
 
       function Level3(){
-        document.getElementById('greendoor').setAttribute('color', '#ffd700');
+        document.getElementById('scene2').setAttribute('visible', 'false');
+        document.getElementById('scene3').setAttribute('visible', 'true');
+
+        var Level2Camera = document.querySelector('#head2');
+        Level2Camera.setAttribute('camera', 'active', false);
+
+        var Level3Camera = document.querySelector('#head3');
+        Level3Camera.setAttribute('camera', 'active', true);
+
+        document.getElementById('environment_lvl2').setAttribute('environment', 'active: false;');
+        document.getElementById('env_lvl3').setAttribute('environment', 'active: true;');
       }
 
       function Hell() {
@@ -103,6 +114,7 @@
         hellCamera.setAttribute('camera', 'active', false);
       }
 
+      //Reset Hell
       function rollBack(){
         var hellanim1 = document.querySelectorAll('#hellstart'), i;
         for (i = 0; i < hellanim1.length; ++i) {
@@ -121,6 +133,7 @@
         <img id="ziegel" src="textures/wall.jpg">
         <img id="wall" src="textures/wall1.jpg">
         <img id="floor" src ="textures/floor.png">
+        <img id="wood" src ="textures/wood.png">
         <a-asset-item id="door-obj" src="models/door/door.obj"></a-asset-item>
         <a-asset-item id="rock" src="models/rock/rock.obj"></a-asset-item>
         <a-asset-item id="rock-mtl" src="models/rock/rock.mtl"></a-asset-item>
@@ -131,6 +144,11 @@
         <a-asset-item id="weed" src="models/tumbleweed/scene.gltf"></a-asset-item>
         <a-asset-item id="drone" src="models/drone/scene.gltf"></a-asset-item>
         <a-asset-item id="sign" src="models/sign/scene.gltf"></a-asset-item>
+        <a-asset-item id="house" src="models/house/scene.gltf"></a-asset-item>
+        <a-asset-item id="campfire" src="models/campfire/scene.gltf"></a-asset-item>
+        <a-asset-item id="tree1" src="models/tree1/scene.gltf"></a-asset-item>
+        <a-asset-item id="tree2" src="models/tree2/scene.gltf"></a-asset-item>
+        <a-asset-item id="tree3" src="models/tree3/scene.gltf"></a-asset-item>
       </a-assets>
 
 <!-- global light -->
@@ -140,7 +158,7 @@
 <a-entity id="scene1">
 
   <!-- Camera and Teleport Lvl 0 -->
-  <a-entity id="cameraRig" position="10 6 20">
+  <a-entity id="cameraRig" position="10 4 20">
   <a-entity id="head" position="0 0 0" camera="" look-controls="pointerLockEnabled:true">
     <a-cursor far="50"></a-cursor>
         <a-entity debug position="0.1 -0.4 0"
@@ -157,6 +175,8 @@
         </a-entity>
   </a-entity>
   </a-entity>
+
+ <a-box position="5 5 10" onClick="Level2()"></a-box>
 
   <!--environment-->
   <a-entity id="start_env" shadow="receive: true" environment="preset: arches; lighting: none; groundYScale: 4; dressingAmount: 5; ground:canyon;"></a-entity>
@@ -181,11 +201,11 @@
  <a-box position="7 6 -41.9" rotation="90 0 0" height="0.3" static-body="sphereRadius:NaN" geometry="depth:20;width:20" material="src:#wall;repeat:5 5"></a-box>
 
  <!--Door Info Text-->
-<a-entity geometry="height:6;width:13" material="color:#f0e2ae" text="value:ON EVER EVERY DOOR IS A STATEMENT. IT MAY BE TRUE OR FALSE. IF A STATEMENT ON A DOOR IS TRUE, THEN ALL STATEMENTS ON THAT DOOR ARE TRUE.
-IF A STATEMENT ON A DOOR IS FALSE, THEN ALL STATEMENTS ON THAT DOOR ARE FALSE.;width:12.77;align:center;color:#000000;letterSpacing:1;wrapCount:39.75000000000001;opacity:2;zOffset:0.505;tabSize:3.71;lineHeight:60"
-rotation="-90 0 0" position="6.6 5.8 -26.5"></a-entity>
+ <a-entity geometry="height:6;width:13" material="color:#f0e2ae" text="value:ON EVER EVERY DOOR IS A STATEMENT. IT MAY BE TRUE OR FALSE. IF A STATEMENT ON A DOOR IS TRUE, THEN ALL STATEMENTS ON THAT DOOR ARE TRUE.
+ IF A STATEMENT ON A DOOR IS FALSE, THEN ALL STATEMENTS ON THAT DOOR ARE FALSE.;width:12.77;align:center;color:#000000;letterSpacing:1;wrapCount:39.75000000000001;opacity:2;zOffset:0.505;tabSize:3.71;lineHeight:60"
+ rotation="-90 0 0" position="6.6 5.8 -26.5"></a-entity>
 
-<a-entity geometry="height:2.5;width:11;depth:0.34" material="color:#f0e2ae" text="value:EXACTLY ONE DOOR IS CORRECT.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="6.6 6 -36" rotation="-90 0 0"></a-entity>
+ <a-entity geometry="height:2.5;width:11;depth:0.34" material="color:#f0e2ae" text="value:EXACTLY ONE DOOR IS CORRECT.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="6.6 6 -36" rotation="-90 0 0"></a-entity>
 
 
  <!--Doors-->
@@ -229,20 +249,19 @@ rotation="-90 0 0" position="6.6 5.8 -26.5"></a-entity>
  <a-entity gltf-model="#cactus" shadow="receive:false" position="19.158 0.567 -30.369" rotation="-2.26 -100.84 -0.95" scale="1.52 1.75 1.34"></a-entity>
 
  <!-- Small Rocks -->
- <a-entity obj-model="obj:#rockset; mtl:#rockset_mtl" shadow="receive:false" position="-29.3 -0.2 -25.4" rotation="0.61 146.52 0" scale="3 3 3"></a-entity>
+ <a-entity obj-model="obj:#rockset; mtl:#rockset_mtl" shadow="receive:false" position="-29.3 -0.4 -25.4" rotation="0.61 146.52 0" scale="3 3 3"></a-entity>
 
-<!-- Sign -->
-<a-entity gltf-model="#sign" shadow="receive:false" position="-2.1 1 6.7" scale="0.7 0.7 0.7"></a-entity>
-
+ <!-- Sign -->
+ <a-entity gltf-model="#sign" shadow="receive:false" position="-2.1 1 6.7" scale="0.7 0.7 0.7"></a-entity>
 </a-entity>
 <!--- End of Scene 1 ---------------------------------------------------------------------------------------------------------------->
 
 <!--- Scene 2 --------------------------------------------------------------------------------------------------------------------->
 <a-entity id="scene2" visible="false" position="100 0 100">
 
-<!-- Camera and Teleport  Lvl 1-->
-<a-entity id="cameraRig1" position="0 4 0">
-  <a-entity id="head1" position="0 2 0" camera="" look-controls="pointerLockEnabled:true">
+ <!-- Camera and Teleport  Lvl 1-->
+ <a-entity id="cameraRig1" position="0 4 0">
+  <a-entity id="head1" position="0 0 0" camera="" look-controls="pointerLockEnabled:true">
     <a-cursor far="40"></a-cursor>
         <a-entity position="0.1 -0.4 0"
           raycaster="objects: .selectable; far: 2"
@@ -257,32 +276,34 @@ rotation="-90 0 0" position="6.6 5.8 -26.5"></a-entity>
             collisionEntities: #tele">
           </a-entity>
   </a-entity>
-</a-entity>
+ </a-entity>
 
-<!-- Environment -->
-<a-entity id="environment_lvl2" environment=" preset:contact; skyType:gradient; fog:0.87; ground:canyon; groundYScale:12;lighting:none; active:false;" shadow="receive: true"></a-entity>
+  <a-box position="5 5 -10" onClick="Level3()"></a-box>
 
-<a-entity light="castShadow:true;shadowCameraTop:50;shadowCameraBottom:-50;shadowCameraRight:50;shadowCameraLeft:-50;shadowMapHeight:2048;shadowMapWidth:2048;type:point;distance:120;decay:0;penumbra:1;color:#5f5429;intensity:0.7;" position="5.167995352850895 100 -37.239260346259115"></a-entity>
-<a-entity light="type:point;distance:40;decay:2.74;color:#f70ffd" position="5 35 -37"></a-entity>
+ <!-- Environment -->
+ <a-entity id="environment_lvl2" environment=" preset:contact; skyType:gradient; fog:0.87; ground:canyon; groundYScale:12;lighting:none; active:false;" shadow="receive: true"></a-entity>
 
-<a-box src="#floor" id="tele" position="0 0 0" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false"  geometry=""></a-box>
-<a-box src="#floor" id="tele" position="10.225170081858654 3 -18.311847891976612" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
-<a-box src="#floor" id="tele" position="18.187677847247883 6 -33.693163591748615" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
-<a-box src="#floor" id="tele" position="13.685525998215738 9 -46.644991977093426" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
-<a-box src="#floor" id="tele" position="2.622602257441315 11 -46.644991977093426" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
-<a-box src="#floor" id="tele" position="0.27263249931577604 14 -35.59504799129411" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
-<a-box src="#floor" id="tele" position="7.234151118152482 17 -27.658062868231553" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
-<a-box src="#floor" id="tele" position="21.16444966412203 20 -33.18188411254587" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
-<a-box src="#floor" id="tele" position="23.93548083980268 23 -52.05236179403322" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
-<a-box src="#floor" id="tele" position="5.517463059651618 26 -55.348915421759436" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
-<a-box src="#floor" id="tele" position="6 28 -36.5" rotation="0 90 0" depth="20" height="0.3" width="20" static-body="sphereRadius:NaN" shadow="receive:false" material="repeat:5 5"></a-box>
+ <a-entity light="castShadow:true;shadowCameraTop:50;shadowCameraBottom:-50;shadowCameraRight:50;shadowCameraLeft:-50;shadowMapHeight:2048;shadowMapWidth:2048;type:point;distance:120;decay:0;penumbra:1;color:#5f5429;intensity:0.7;" position="5.167995352850895 100 -37.239260346259115"></a-entity>
+ <a-entity light="type:point;distance:40;decay:2.74;color:#f70ffd" position="5 35 -37"></a-entity>
 
-<a-box src="#floor" position="6 32.85 -26.4" rotation="90 0 0" depth="20" height="0.3" width="20" shadow="receive:false" material="repeat:5 5" geometry="depth:10"></a-box>
-<a-box src="#floor" material="side: double" position="16 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20"  material="repeat:5 5" geometry="primitive:triangle;vertexA:-5.75 5.3 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false"></a-box>
-<a-box src="#floor" material="side:double" position="-4 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20"  material="repeat:5 5" geometry="primitive:triangle;vertexA:-5.75 5.29 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false" scale="1 1 2.58"></a-box>
+ <a-box src="#floor" id="tele" position="0 0 0" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false"  geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="10.225170081858654 3 -18.311847891976612" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="18.187677847247883 6 -33.693163591748615" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="13.685525998215738 9 -46.644991977093426" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="2.622602257441315 11 -46.644991977093426" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="0.27263249931577604 14 -35.59504799129411" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="7.234151118152482 17 -27.658062868231553" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="21.16444966412203 20 -33.18188411254587" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="23.93548083980268 23 -52.05236179403322" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="5.517463059651618 26 -55.348915421759436" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+ <a-box src="#floor" id="tele" position="6 28 -36.5" rotation="0 90 0" depth="20" height="0.3" width="20" static-body="sphereRadius:NaN" shadow="receive:false" material="repeat:5 5"></a-box>
+
+ <a-box src="#floor" position="6 32.85 -26.4" rotation="90 0 0" depth="20" height="0.3" width="20" shadow="receive:false" material="repeat:5 5" geometry="depth:10"></a-box>
+ <a-box src="#floor" material="side: double" position="16 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20"  material="repeat:5 5" geometry="primitive:triangle;vertexA:-5.75 5.3 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false"></a-box>
+ <a-box src="#floor" material="side:double" position="-4 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20"  material="repeat:5 5" geometry="primitive:triangle;vertexA:-5.75 5.29 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false" scale="1 1 2.58"></a-box>
 
 
-<a-entity position="11.7 28.1 -40.1" rotation="0 180 0" scale="0.75 0.75 0.75">
+ <a-entity position="11.7 28.1 -40.1" rotation="0 180 0" scale="0.75 0.75 0.75">
   <!--Green Door-->
        <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000" event-set__enter="_event: mouseenter; color: #8e0000" event-set__leave="_event: mouseleave; color: #b20000" onclick="Hell()"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE GREEN DOOR LEADS                                                        TO THE GOLD.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.1 8 -18"></a-entity>
@@ -293,16 +314,93 @@ rotation="-90 0 0" position="6.6 5.8 -26.5"></a-entity>
        <a-obj-model shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc" event-set__enter="_event: mouseenter; color: #000099" event-set__leave="_event: mouseleave; color: #0000cc" onclick="Hell()"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE RED DOOR LEADS                                                        TO DEATH.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="16.5 8 -18"></a-entity>
 
- <a-entity geometry="height:4;width:12;depth:0.34" material="color:#f0e2ae" text="value:TWO DOORS ARE CORRECT.                  ONE LEADS TO THE GOLD THE OTHER TWO LEAD TO DEATH.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="7.86000591867141 0.05629566394304675 -6.954601167343696" rotation="-90 0 0"></a-entity>
- </a-entity>
+  <a-entity geometry="height:4;width:12;depth:0.34" material="color:#f0e2ae" text="value:TWO DOORS ARE CORRECT.                  ONE LEADS TO THE GOLD THE OTHER TWO LEAD TO DEATH.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="7.86000591867141 0.05629566394304675 -6.954601167343696" rotation="-90 0 0"></a-entity>
+  </a-entity>
 
- <a-entity id="atmomusic" position="20 35 -30" sound="src: url(sounds/scifi_atmo.mp3); volume:0.1;autoplay: false;loop: true;">
+  <a-entity id="atmomusic" position="20 35 -30" sound="src: url(sounds/scifi_atmo.mp3); volume:0.1;autoplay: false;loop: true;">
    <a-animation attribute="rotation" dur="20000" repeat="indefinite" to="0 360 0" easing="linear"></a-animation>
    <a-entity id="dronemusic" gltf-model="#drone" shadow="receive:false" position="50 0 0" scale="5 5 5" sound="src: url(sounds/drone.mp3); autoplay: false; loop: true;"></a-entity>
+  </a-entity>
+</a-entity>
+<!--- Scene 3 --------------------------------------------------------------------------------------------------------------------->
+<a-entity id="scene3" visible="false" position="300 0 300">
+
+  <!-- Camera and Teleport Lvl 0 -->
+  <a-entity id="cameraRig3" position="27 6 50">
+  <a-entity id="head3" position="0 0 0" camera="" look-controls="pointerLockEnabled:true">
+    <a-cursor far="50"></a-cursor>
+        <a-entity debug position="0.1 -0.4 0"
+          raycaster="objects: .selectable; far: 2"
+          teleport-extras
+          teleport-controls=
+            "cameraRig: #cameraRig3;
+            teleportOrigin: #head3;
+            startEvents:starttouch;
+            endEvents:endtouch;
+            curveShootingSpeed:20;
+            hitCylinderRadius:0.3;
+            collisionEntities: #tele">
+        </a-entity>
+  </a-entity>
+  </a-entity>
+
+
+
+
+  <a-entity id="env_lvl3" shadow="receive: true" environment="preset: forest;active:false;lighting:none;groundYScale:40; dressingAmount: 30;ground:hills;dressingScale:20;seed:8;playArea:1.3;fog:0.7;"></a-entity>
+
+  <!--light scene 3 -->
+<a-entity position="-2.351 52.39591886314297 18.022" visible="" rotation="" light="castShadow:true;shadowCameraTop:0;shadowCameraRight:100;shadowCameraBottom:-65;shadowCameraLeft:-100;shadowCameraFar:150;shadowCameraFov:100;shadowCameraNear:-100;shadowMapHeight:2048;shadowMapWidth:2048;angle:0"></a-entity>
+
+<!-- Teleporter -->
+<a-box src="#wood" id="tele" position="27 0.2 50" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+<a-box src="#wood" id="tele" position="15 2 40" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+<a-box src="#wood" id="tele" position="10 4 24" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+<a-box src="#wood" id="tele" position="5 4 10" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+<a-box src="#wood" id="tele" position="-10 4 -4" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
+
+<!-- Platform -->
+<a-entity position="-19.618667627281354 -27.989570112797495 -60.43340873187219" rotation="0 180 0">
+  <a-box src="#wood" id="tele" position="6.058532064814585 28 -36.5" rotation="0 90 0" depth="20" height="0.3" width="20" static-body="sphereRadius:NaN" shadow="receive:false" material="repeat:5 5" geometry=""></a-box>
+  <a-box src="#wood" position="6 32.85 -26.4" rotation="90 0 0" depth="20" height="0.3" width="20" shadow="receive:false" material="repeat:5 5" geometry="depth:10"></a-box>
+  <a-box src="#wood" material="side:double" position="16 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20" geometry="primitive:triangle;vertexA:-5.75 5.3 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false"></a-box>
+  <a-box src="#wood" material="side:double" position="-4 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20" geometry="primitive:triangle;vertexA:-5.75 5.29 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false" scale="1 1 2.58"></a-box>
+</a-entity>
+
+<!-- House & Trees-->
+ <a-entity gltf-model="#house" shadow="receive:false" position="-60.14889940005364 0.8417959579002057 -25.776980223630744" scale="0.07 0.05 0.05" rotation="0 0.56 0"></a-entity>
+ <a-entity gltf-model="#campfire" shadow="receive:false" position="-45.32277319701768 -0.13592205173184713 27.360198877369896" scale="0.02 0.02 0.02" rotation="0 0.56 0"></a-entity>
+
+<a-entity gltf-model="#tree1" shadow="receive:false" position="-43.23971160867009 1.023317982090009 -72.16238211035667" scale="0.01 0.01 0.01" rotation="0 0.56 0"></a-entity>
+<a-entity gltf-model="#tree1" shadow="receive:false" position="55.57154455246737 0.31992242838070606 -71.80864373637462" scale="0.01 0.01 0.01" rotation="0 0.56 0"></a-entity>
+<a-entity gltf-model="#tree1" shadow="receive:false" position="38.66806727496757 0.040466704358467 73.28254610597699" scale="0.01 0.01 0.01" rotation="0 0.56 0"></a-entity>
+
+
+<a-entity gltf-model="#tree2" shadow="receive:false" position="-89.18979797052882 5.746460260116737 68.26798917789267" scale="0.02 0.02 0.02" rotation="0 0.56 0"></a-entity>
+<a-entity gltf-model="#tree2" shadow="receive:false" position="67.91443793854808 0.28839941679901804 2.4063858139755894" scale="0.02 0.02 0.02" rotation="0 0.56 0"></a-entity>
+
+<a-entity gltf-model="#tree3" shadow="receive:false" position="-41.89951732761057 3.3694017732755652 3.7063405204613105" scale="0.07 0.05 0.05" rotation="0 0.56 0"></a-entity>
+<a-entity gltf-model="#tree3" shadow="receive:false" position="21.94571420096787 3.5338695100435116 3.7063405204613105" scale="0.07 0.05 0.05" rotation="0 0.56 0"></a-entity>
+
+<!-- Doors -->
+
+<a-entity position="-31.49267362106491 0.10535851879941927 -20.20429446205793" rotation="" scale="0.75 0.75 0.75">
+  <!--Green Door-->
+       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000" event-set__enter="_event: mouseenter; color: #8e0000" event-set__leave="_event: mouseleave; color: #b20000" onclick=""></a-obj-model>
+       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value:.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.1 8 -18"></a-entity>
+  <!--Red Door-->
+       <a-obj-model id="greendoor" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200" event-set__enter="_event: mouseenter; color: #008e00" event-set__leave="_event: mouseleave; color: #00b200"  onclick=""></a-obj-model>
+       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: .; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="7.5 8 -18"></a-entity>
+  <!--Blue Door -->
+       <a-obj-model shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc" event-set__enter="_event: mouseenter; color: #000099" event-set__leave="_event: mouseleave; color: #0000cc" onclick=""></a-obj-model>
+       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value:.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="16.5 8 -18"></a-entity>
+
+ <a-entity geometry="height:4;width:12;depth:0.34" material="color:#f0e2ae" text="value:.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="7.86000591867141 0.05629566394304675 -6.954601167343696" rotation="-90 0 0"></a-entity>
+
  </a-entity>
 
 </a-entity>
-
+<!--- End of Scene 3 --------------------------------------------------------------------------------------------------------------------->
 <!--- (Hölle)--------------------------------------------------------------------------------------------------------->
 <a-entity id="hell" visible="false" position="200 0 200">
 
@@ -380,7 +478,6 @@ rotation="-90 0 0" position="6.6 5.8 -26.5"></a-entity>
  <!-- Hellfire Sound -->
  <a-entity id="you_dead" sound="src: url(sounds/you_dead.mp3); autoplay:false; loop:false;" ></a-entity>
  <a-entity id="dead" sound="src: url(sounds/dead.mp3); autoplay:false; loop:false;"></a-entity>
-
 </a-entity>
 <!-- End of Hell ------------------------------------------------------------------------------------------------------>
 </a-scene>
