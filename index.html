@@ -24,14 +24,29 @@
 
     <script type="text/javascript">
 
+      //Component for accessing the teleport-controls variable prevHitHeight
+      AFRAME.registerComponent('y-offset-control', {
+        resetTeleportOffset: function() {
+          this.el.components['teleport-controls'].prevHitHeight = 0
+        }
+      });
+
+      // call the function in the y-offset-control
+      function setOffset(){
+       var temp = document.querySelector('[y-offset-control]').components['y-offset-control'];
+       temp.resetTeleportOffset();
+      }
 
       function Level2() {
-
         //Show and Hide the Scenes
         document.getElementById('scene1').setAttribute('visible', 'false');
         document.getElementById('scene2').setAttribute('visible', 'true');
         document.getElementById('start_env').setAttribute('environment', 'active: false;');
         document.getElementById('environment_lvl2').setAttribute('environment', 'active: true;');
+
+        // Set the Camera
+        document.getElementById('cameraRig').setAttribute('position', '100 4 100');
+        setOffset();
 
         //Set the Sound
         var oceanmusic = document.querySelector('#oceanmusic');
@@ -40,29 +55,21 @@
         weed.components.sound.pauseSound();
         var rat = document.querySelector('#ratmusic');
         rat.components.sound.pauseSound();
-
         var drone = document.querySelector('#dronemusic');
         drone.components.sound.playSound();
         var atmo = document.querySelector('#atmomusic');
         atmo.components.sound.playSound();
-
-        //Set new Camera
-        var secondCamera = document.querySelector('#head1');
-        secondCamera.setAttribute('camera', 'active', true);
       }
 
       function Level3(){
         document.getElementById('scene2').setAttribute('visible', 'false');
         document.getElementById('scene3').setAttribute('visible', 'true');
-
-        var Level2Camera = document.querySelector('#head2');
-        Level2Camera.setAttribute('camera', 'active', false);
-
-        var Level3Camera = document.querySelector('#head3');
-        Level3Camera.setAttribute('camera', 'active', true);
-
         document.getElementById('environment_lvl2').setAttribute('environment', 'active: false;');
         document.getElementById('env_lvl3').setAttribute('environment', 'active: true;');
+
+        // Set the Camera
+        document.getElementById('cameraRig').setAttribute('position', '227 4 250');
+        setOffset();
       }
 
       function Hell() {
@@ -71,17 +78,13 @@
         document.getElementById('scene2').setAttribute('visible', 'false');
         document.getElementById('environment_lvl2').setAttribute('environment', 'active: false;');
 
-        var standartCam = document.querySelector('#head');
-        standartCam.setAttribute('camera', 'active', false);
-        var hellCamera = document.querySelector('#head2');
-        hellCamera.setAttribute('camera', 'active', true);
+        // Set the Camera
+        document.getElementById('cameraRig').setAttribute('position', '-100 4 -100');
+        setOffset();
 
-        var hellanim = document.querySelector('#hellstart');
-        hellanim.emit('startafterteleport');
-
-        var hellanim1 = document.querySelectorAll('#hellstart1'), i;
-        for (i = 0; i < hellanim1.length; ++i) {
-          hellanim1[i].emit('startafterteleport');
+        var hellanim = document.querySelectorAll('#hellstart'), i;
+        for (i = 0; i < hellanim.length; ++i) {
+          hellanim[i].emit('startafterteleport');
         }
 
         var light2 = document.querySelector('#animationEndHell');
@@ -92,43 +95,37 @@
 
         var hellsound = document.querySelector('#you_dead');
         hellsound.components.sound.playSound();
-
         var dead = document.querySelector('#dead');
         dead.components.sound.playSound();
-
         var drone = document.querySelector('#dronemusic');
         drone.components.sound.stopSound();
         var atmo = document.querySelector('#atmomusic');
         atmo.components.sound.stopSound();
-
       }
+
 
       function backToLvl1(){
         document.getElementById('scene1').setAttribute('visible', 'true');
         document.getElementById('hell').setAttribute('visible', 'false');
         document.getElementById('start_env').setAttribute('environment', 'active: true;');
 
-        var standartCam = document.querySelector('#head');
-        standartCam.setAttribute('camera', 'active', true);
-        var hellCamera = document.querySelector('#head2');
-        hellCamera.setAttribute('camera', 'active', false);
+        // Set the Camera
+        document.getElementById('cameraRig').setAttribute('position', '10 4 20');
+        setOffset();
+
       }
 
       //Reset Hell
       function rollBack(){
-        var hellanim1 = document.querySelectorAll('#hellstart'), i;
-        for (i = 0; i < hellanim1.length; ++i) {
-          hellanim1[i].emit('goBack');
-        }
-        var hellanim1 = document.querySelectorAll('#hellstart1'), i;
-        for (i = 0; i < hellanim1.length; ++i) {
-          hellanim1[i].emit('goBack');
+          var hellanim = document.querySelectorAll('#hellstart'), i;
+        for (i = 0; i < hellanim.length; ++i) {
+          hellanim[i].emit('goBack');
         }
       }
 
       </script>
   <!-- physics=debug:true; rain fog="type: linear; color: #D8D8D8; far: 1000; near: 0"-->
-    <a-scene stats>
+    <a-scene stats vr-mode-ui="enabled: true">
       <a-assets>
         <img id="ziegel" src="textures/wall.jpg">
         <img id="wall" src="textures/wall1.jpg">
@@ -154,29 +151,28 @@
 <!-- global light -->
 <a-entity light="color:#E7CCA2;type:ambient;intensity:0.35"></a-entity>
 
+<!-- Camera and Teleport -->
+<a-entity id="cameraRig" position="10 4 20">
+<a-entity id="head" position="0 0 0" camera="" look-controls="pointerLockEnabled:true">
+  <a-cursor far="50"></a-cursor>
+      <a-entity debug position="0.1 -0.4 0"
+        raycaster="objects: .selectable; far: 2"
+        teleport-extras
+        y-offset-control
+        teleport-controls=
+          "cameraRig: #cameraRig;
+          teleportOrigin: #head;
+          startEvents:starttouch;
+          endEvents:endtouch;
+          curveShootingSpeed:20;
+          hitCylinderRadius:0.3;
+          collisionEntities: #tele">
+      </a-entity>
+</a-entity>
+</a-entity>
+
 <!--- Scene 1 --------------------------------------------------------------------------------------------------------------------->
 <a-entity id="scene1">
-
-  <!-- Camera and Teleport Lvl 0 -->
-  <a-entity id="cameraRig" position="10 4 20">
-  <a-entity id="head" position="0 0 0" camera="" look-controls="pointerLockEnabled:true">
-    <a-cursor far="50"></a-cursor>
-        <a-entity debug position="0.1 -0.4 0"
-          raycaster="objects: .selectable; far: 2"
-          teleport-extras
-          teleport-controls=
-            "cameraRig: #cameraRig;
-            teleportOrigin: #head;
-            startEvents:starttouch;
-            endEvents:endtouch;
-            curveShootingSpeed:20;
-            hitCylinderRadius:0.3;
-            collisionEntities: #tele">
-        </a-entity>
-  </a-entity>
-  </a-entity>
-
- <a-box position="5 5 10" onClick="Level2()"></a-box>
 
   <!--environment-->
   <a-entity id="start_env" shadow="receive: true" environment="preset: arches; lighting: none; groundYScale: 4; dressingAmount: 5; ground:canyon;"></a-entity>
@@ -259,25 +255,6 @@
 <!--- Scene 2 --------------------------------------------------------------------------------------------------------------------->
 <a-entity id="scene2" visible="false" position="100 0 100">
 
- <!-- Camera and Teleport  Lvl 1-->
- <a-entity id="cameraRig1" position="0 4 0">
-  <a-entity id="head1" position="0 0 0" camera="" look-controls="pointerLockEnabled:true">
-    <a-cursor far="40"></a-cursor>
-        <a-entity position="0.1 -0.4 0"
-          raycaster="objects: .selectable; far: 2"
-          teleport-extras
-          teleport-controls=
-            "cameraRig: #cameraRig1;
-            teleportOrigin: #head1;
-            startEvents:starttouch;
-            endEvents:endtouch;
-            curveShootingSpeed:20;
-            hitCylinderRadius:0.3;
-            collisionEntities: #tele">
-          </a-entity>
-  </a-entity>
- </a-entity>
-
   <a-box position="5 5 -10" onClick="Level3()"></a-box>
 
  <!-- Environment -->
@@ -285,6 +262,7 @@
 
  <a-entity light="castShadow:true;shadowCameraTop:50;shadowCameraBottom:-50;shadowCameraRight:50;shadowCameraLeft:-50;shadowMapHeight:2048;shadowMapWidth:2048;type:point;distance:120;decay:0;penumbra:1;color:#5f5429;intensity:0.7;" position="5.167995352850895 100 -37.239260346259115"></a-entity>
  <a-entity light="type:point;distance:40;decay:2.74;color:#f70ffd" position="5 35 -37"></a-entity>
+
 
  <a-box src="#floor" id="tele" position="0 0 0" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false"  geometry=""></a-box>
  <a-box src="#floor" id="tele" position="10.225170081858654 3 -18.311847891976612" rotation="0 90 0" depth="4" height="0.3" width="4" static-body="sphereRadius:NaN" shadow="receive:false" material="" geometry=""></a-box>
@@ -323,31 +301,9 @@
   </a-entity>
 </a-entity>
 <!--- Scene 3 --------------------------------------------------------------------------------------------------------------------->
-<a-entity id="scene3" visible="false" position="300 0 300">
+<a-entity id="scene3" visible="false" position="200 0 200">
 
-  <!-- Camera and Teleport Lvl 0 -->
-  <a-entity id="cameraRig3" position="27 6 50">
-  <a-entity id="head3" position="0 0 0" camera="" look-controls="pointerLockEnabled:true">
-    <a-cursor far="50"></a-cursor>
-        <a-entity debug position="0.1 -0.4 0"
-          raycaster="objects: .selectable; far: 2"
-          teleport-extras
-          teleport-controls=
-            "cameraRig: #cameraRig3;
-            teleportOrigin: #head3;
-            startEvents:starttouch;
-            endEvents:endtouch;
-            curveShootingSpeed:20;
-            hitCylinderRadius:0.3;
-            collisionEntities: #tele">
-        </a-entity>
-  </a-entity>
-  </a-entity>
-
-
-
-
-  <a-entity id="env_lvl3" shadow="receive: true" environment="preset: forest;active:false;lighting:none;groundYScale:40; dressingAmount: 30;ground:hills;dressingScale:20;seed:8;playArea:1.3;fog:0.7;"></a-entity>
+<a-entity id="env_lvl3" shadow="receive: true" environment="preset: forest;active:false;lighting:none;groundYScale:40; dressingAmount: 30;ground:hills;dressingScale:20;seed:8;playArea:1.3;fog:0.7;"></a-entity>
 
   <!--light scene 3 -->
 <a-entity position="-2.351 52.39591886314297 18.022" visible="" rotation="" light="castShadow:true;shadowCameraTop:0;shadowCameraRight:100;shadowCameraBottom:-65;shadowCameraLeft:-100;shadowCameraFar:150;shadowCameraFov:100;shadowCameraNear:-100;shadowMapHeight:2048;shadowMapWidth:2048;angle:0"></a-entity>
@@ -402,25 +358,7 @@
 </a-entity>
 <!--- End of Scene 3 --------------------------------------------------------------------------------------------------------------------->
 <!--- (Hölle)--------------------------------------------------------------------------------------------------------->
-<a-entity id="hell" visible="false" position="200 0 200">
-
-  <a-entity id="cameraRig2" position="0 4 0">
-    <a-entity id="head2" position="0 2 0" camera="" look-controls="pointerLockEnabled:true">
-      <a-cursor far="30"></a-cursor>
-          <a-entity position="0.1 -0.4 0"
-            raycaster="objects: .selectable; far: 2"
-            teleport-extras
-            teleport-controls=
-              "cameraRig: #cameraRig2;
-              teleportOrigin: #head2;
-              startEvents:starttouch;
-              endEvents:endtouch;
-              curveShootingSpeed:30;
-              hitCylinderRadius:0.3;
-              collisionEntities: #tele">
-        </a-entity>
-  </a-entity>
- </a-entity>
+<a-entity id="hell" visible="false" position="-100 0 -100">
 
   <a-light id="hellstart" color="#800909" type="point" intensity="5" distance="25" decay="0.36" groundColor="#000000" position="0 10 0">
   <a-animation begin="startafterteleport" attribute="intensity" from="5" to="100000" delay="4000" dur="5500"></a-animation>
@@ -439,36 +377,36 @@
 
  <!-- Hellfire -->
  <a-entity id="hellfire">
-    <a-ocean id="hellstart1" density="15" position="0 1 0" color="#8b0000" scale="2 2 2" speed="5">
+    <a-ocean id="hellstart" density="15" position="0 1 0" color="#8b0000" scale="2 2 2" speed="5">
     <a-animation begin="startafterteleport" attribute="position" from="0 1 0" to="0 -1 0" delay="6000" dur="3500" ></a-animation>
     <a-animation begin="goBack" attribute="position" to="0 1 0" from="0 -1 0" dur="10" ></a-animation>
   </a-ocean>
     <a-entity rotation="180 90 0">
-        <a-ocean id="hellstart1" density="15" position="0 -19 0" color="#8b0000" scale="2 2 2" speed="5">
+        <a-ocean id="hellstart" density="15" position="0 -19 0" color="#8b0000" scale="2 2 2" speed="5">
   <a-animation begin="startafterteleport" attribute="position" from="0 -19 0" to="0 -26 0" delay="6000" dur="3500"></a-animation>
   <a-animation begin="goBack" attribute="position" to="0 -19 0" from="0 -26 0" dur="10" ></a-animation>
         </a-ocean>
       </a-entity>
       <a-entity rotation="90 90 0">
-        <a-ocean id="hellstart1" density="15" position="0 -9.5 -10" color="#8b0000" scale="2 2 2" speed="5">
+        <a-ocean id="hellstart" density="15" position="0 -9.5 -10" color="#8b0000" scale="2 2 2" speed="5">
   <a-animation begin="startafterteleport" attribute="position" from="0 -9.5 -10" to="0 -14 -10" delay="6000" dur="3500"></a-animation>
   <a-animation begin="goBack" attribute="position" to="0 -9.5 -10" from="0 -14 -10" dur="10"></a-animation>
         </a-ocean>
       </a-entity>
       <a-entity rotation="-90 90 0">
-        <a-ocean id="hellstart1" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5" >
+        <a-ocean id="hellstart" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5" >
   <a-animation begin="startafterteleport" attribute="position" from="0 -9.5 10" to="0 -14 10" delay="6000" dur="3500"></a-animation>
   <a-animation begin="goBack" attribute="position" to="0 -9.5 10" from="0 -14 10" dur="10"></a-animation>
         </a-ocean>
       </a-entity>
       <a-entity rotation="-90 0 0">
-        <a-ocean id="hellstart1" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5">
+        <a-ocean id="hellstart" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5">
   <a-animation  begin="startafterteleport" attribute="position" from="0 -9.5 10" to="0 -14 10" delay="6000" dur="3500"></a-animation>
     <a-animation begin="goBack" attribute="position" to="0 -9.5 10" from="0 -14 10" dur="10"></a-animation>
         </a-ocean>
       </a-entity>
       <a-entity rotation="-90 -180 0">
-        <a-ocean id="hellstart1" density="15"position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5">
+        <a-ocean id="hellstart" density="15"position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5">
   <a-animation begin="startafterteleport" attribute="position" from="0 -9.5 10" to="0 -14 10" delay="6000" dur="3000"></a-animation>
   <a-animation begin="goBack" attribute="position" to="0 -9.5 10" from="0 -14 10" dur="10"></a-animation>
         </a-ocean>
