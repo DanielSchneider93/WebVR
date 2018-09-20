@@ -206,10 +206,10 @@
  <!--Doors-->
  <a-entity position="3.4 6.16 -23.8">
   <!--Green Door-->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200" event-set__enter="_event: mouseenter; color: #008e00" event-set__leave="_event: mouseleave; color: #00b200" onclick="Hell()" material="" obj-model=""></a-obj-model>
+       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200" event-set__mouseenter="color: #008e00" event-set__mouseleave="color: #00b200" onclick="Hell()" material="" obj-model=""></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THIS DOOR LEADS TO THE GOLD, THE OTHER DOOR LEADS TO DEATH.; width: 7.5; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.11 7.5 -18.01"></a-entity>
   <!--Red Door-->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="8 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000" event-set__enter="_event: mouseenter; color: #8e0000" event-set__leave="_event: mouseleave; color: #b20000" onclick="Level2()" material="" obj-model=""></a-obj-model>
+       <a-obj-model shadow="receive:false" src="#door-obj" position="8 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000" event-set__mouseenter=" color: #8e0000" event-set__mouseleave="color: #b20000" onclick="Level2()" material="" obj-model=""></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: ONE OF THESE DOORS LEAD TO THE GOLD, THE OTHER LEADS TO DEATH.; width: 7.5; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="8.16 7.5 -18.01"></a-entity>
  </a-entity>
 
@@ -282,13 +282,13 @@
 
  <a-entity position="11.7 28.1 -40.1" rotation="0 180 0" scale="0.75 0.75 0.75">
   <!--Green Door-->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000" event-set__enter="_event: mouseenter; color: #8e0000" event-set__leave="_event: mouseleave; color: #b20000" onclick="Hell()"></a-obj-model>
+       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"event-set__mouseenter=" color: #8e0000" event-set__mouseleave=" color: #b20000" onclick="Hell()"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE GREEN DOOR LEADS                                                        TO THE GOLD.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.1 8 -18"></a-entity>
   <!--Red Door-->
-       <a-obj-model id="greendoor" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200" event-set__enter="_event: mouseenter; color: #008e00" event-set__leave="_event: mouseleave; color: #00b200"  onclick="Level3()"></a-obj-model>
+       <a-obj-model id="greendoor" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"event-set__mouseenter=" color: #008e00" event-set__mouseleave=" color: #00b200"  onclick="Level3()"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE RED DOOR LEADS                                                        TO THE GOLD.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="7.5 8 -18"></a-entity>
   <!--Blue Door -->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc" event-set__enter="_event: mouseenter; color: #000099" event-set__leave="_event: mouseleave; color: #0000cc" onclick="Hell()"></a-obj-model>
+       <a-obj-model shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"event-set__mouseenter=" color: #000099" event-set__mouseleave=" color: #0000cc" onclick="Hell()"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE RED DOOR LEADS                                                        TO DEATH.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="16.5 8 -18"></a-entity>
 
   <a-entity geometry="height:4;width:12;depth:0.34" material="color:#f0e2ae" text="value:TWO DOORS ARE CORRECT.                  ONE LEADS TO THE GOLD THE OTHER TWO LEAD TO DEATH.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="7.86000591867141 0.05629566394304675 -6.954601167343696" rotation="-90 0 0"></a-entity>
@@ -341,13 +341,13 @@
 
 <a-entity position="-31.49267362106491 0.10535851879941927 -20.20429446205793" rotation="" scale="0.75 0.75 0.75">
   <!--Green Door-->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000" event-set__enter="_event: mouseenter; color: #8e0000" event-set__leave="_event: mouseleave; color: #b20000" onclick=""></a-obj-model>
+       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"event-set__mouseenter=" color: #8e0000" event-set__mouseleave=" color: #b20000" onclick=""></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value:.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.1 8 -18"></a-entity>
   <!--Red Door-->
-       <a-obj-model id="greendoor" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200" event-set__enter="_event: mouseenter; color: #008e00" event-set__leave="_event: mouseleave; color: #00b200"  onclick=""></a-obj-model>
+       <a-obj-model id="greendoor" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"event-set__mouseenter=" color: #008e00" event-set__mouseleave=" color: #00b200"  onclick=""></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: .; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="7.5 8 -18"></a-entity>
   <!--Blue Door -->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc" event-set__enter="_event: mouseenter; color: #000099" event-set__leave="_event: mouseleave; color: #0000cc" onclick=""></a-obj-model>
+       <a-obj-model shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"event-set__mouseenter=" color: #000099" event-set__mouseleave=" color: #0000cc" onclick=""></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value:.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="16.5 8 -18"></a-entity>
 
  <a-entity geometry="height:4;width:12;depth:0.34" material="color:#f0e2ae" text="value:.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="7.86000591867141 0.05629566394304675 -6.954601167343696" rotation="-90 0 0"></a-entity>
