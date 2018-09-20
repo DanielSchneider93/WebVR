@@ -151,6 +151,8 @@
 <!-- Camera and Teleport -->
 <a-entity id="cameraRig" position="10 4 20">
 <a-entity id="head" position="0 0 0" camera="" look-controls="pointerLockEnabled:true">
+<a-entity id="left-hand" hand-controls="left" vive-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
+<a-entity id="right-hand" hand-controls="right" vive-controls="hand: right" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
   <a-cursor far="50"></a-cursor>
       <a-entity debug position="0.1 -0.4 0"
         raycaster="objects: .selectable; far: 2"
