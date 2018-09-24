@@ -1,7 +1,8 @@
 <html>
   <head>
-     <!-- a frame main-->
-     <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    
+     <!-- <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>  -->
+	  <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.js"></script> 
      <!-- extras-->
      <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
       <!-- teleport -->
@@ -11,6 +12,7 @@
      <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
      <!-- Environment -->
      <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+	 <script src="oculus_controller_helper.js"></script>
 
 
   <title>IC Web VR - Daniel Schneider</title>
@@ -119,9 +121,9 @@
           hellanim[i].emit('goBack');
         }
       }
+</script>
 
-      </script>
-  <!-- physics=debug:true; rain fog="type: linear; color: #D8D8D8; far: 1000; near: 0"-->
+ 
     <a-scene stats vr-mode-ui="enabled: true">
       <a-assets>
         <img id="ziegel" src="textures/wall.jpg">
@@ -150,28 +152,57 @@
 
 <!-- Camera and Teleport -->
 <a-entity id="cameraRig" position="10 4 20">
-<a-entity id="head" position="0 0 0" camera="" look-controls="pointerLockEnabled:true">
-<a-entity id="left-hand" hand-controls="left" vive-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
-<a-entity id="right-hand" hand-controls="right" vive-controls="hand: right" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
-  <a-cursor far="50"></a-cursor>
-      <a-entity debug position="0.1 -0.4 0"
-        raycaster="objects: .selectable; far: 2"
-        teleport-extras
-        y-offset-control
-        teleport-controls=
+<a-entity position="0 1.4 0">
+
+<a-entity id='left-controller' raycaster="objects: .selectable; far: 2" 
+	    teleport-extras
+        y-offset-control 
+		teleport-controls=
           "cameraRig: #cameraRig;
           teleportOrigin: #head;
           startEvents:starttouch;
           endEvents:endtouch;
           curveShootingSpeed:20;
           hitCylinderRadius:0.3;
-          collisionEntities: #tele">
-      </a-entity>
+          collisionEntities: #tele" 
+		controller-with-cursor-if-present="left"></a-entity>
+
+  <a-entity id='right-controller' raycaster="objects: .selectable; far: 2" 
+		  teleport-extras
+          y-offset-control 
+		  teleport-controls=
+          "cameraRig: #cameraRig;
+          teleportOrigin: #head;
+          startEvents:starttouch;
+          endEvents:endtouch;
+          curveShootingSpeed:20;
+          hitCylinderRadius:0.3;
+          collisionEntities: #tele" 
+		  controller-with-cursor-if-present="right"></a-entity>  
+ </a-entity>
+
+
+   <a-camera id="head">
+
+    <a-entity id="camera-cursor"
+      cursor="fuse:true; fuseTimeout:2000"
+      raycaster="far:20; interval:250; objects:.clickable"
+      geometry="primitive:ring"
+      scale="0.05 0.05 0.05"
+      material="color:blue; shader:flat"
+      position="0 0 -3">
+    </a-entity>
+  </a-camera>
+
+  
+
 </a-entity>
 </a-entity>
 
-<!--- Scene 1 --------------------------------------------------------------------------------------------------------------------->
+<!--- Scene 1 ------------------------------------------------------------------------------------------------------------------- -->
 <a-entity id="scene1">
+
+  <a-box  position ="5 5 10" clickbait></a-box>
 
   <!--environment-->
   <a-entity id="start_env" shadow="receive: true" environment="preset: arches; lighting: none; groundYScale: 4; dressingAmount: 5; ground:canyon;"></a-entity>
@@ -183,8 +214,8 @@
   <a-entity geometry="primitive:plane;width:11" material="color:f0e2ae" text="value:You can only Teleport on the Platforms;width:9.68;align:center;color:#000000;letterSpacing:0.23;wrapCount:35.06" position="9.5 0.5 15.51"></a-entity>
 
  <!--Jump Pads-->
-  <a-box src="#ziegel" id="tele" position="10 0.5 20" rotation="0 90 0" depth="4" height="0.3" width="4" shadow="receive:false"  geometry=""></a-box>
-  <a-box src="#ziegel" id="tele" position="6.5 5 -15.645" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
+  <a-box src="#ziegel" clickbait id="tele" position="10 0.5 20" rotation="0 90 0" depth="4" height="0.3" width="4" shadow="receive:false"  geometry=""></a-box>
+  <a-box src="#ziegel" clickbait id="tele" position="6.5 5 -15.645" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
   <a-box src="#ziegel" id="tele" position="20 1 19.6" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
   <a-box src="#ziegel" id="tele" position="24.2 1.9 11.3" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
   <a-box src="#ziegel" id="tele" position="27.4 2.9 0.4" rotation="0 90 0" depth="4" height="0.3" width="4" shadow="receive:false" material="" geometry=""></a-box>
