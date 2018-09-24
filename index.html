@@ -152,20 +152,9 @@
 
 <!-- Camera and Teleport -->
 <a-entity id="cameraRig" position="10 4 20">
-<a-entity position="0 1.4 0">
+<a-entity position="0 1.6 0">
 
-<a-entity id='left-controller' raycaster="objects: .selectable; far: 2" 
-	    teleport-extras
-        y-offset-control 
-		teleport-controls=
-          "cameraRig: #cameraRig;
-          teleportOrigin: #head;
-          startEvents:starttouch;
-          endEvents:endtouch;
-          curveShootingSpeed:20;
-          hitCylinderRadius:0.3;
-          collisionEntities: #tele" 
-		controller-with-cursor-if-present="left"></a-entity>
+<a-entity id='left-controller' controller-with-cursor-if-present="left"></a-entity>
 
   <a-entity id='right-controller' raycaster="objects: .selectable; far: 2" 
 		  teleport-extras
@@ -178,7 +167,7 @@
           curveShootingSpeed:20;
           hitCylinderRadius:0.3;
           collisionEntities: #tele" 
-		  controller-with-cursor-if-present="right"></a-entity>  
+		  controller-with-cursor-if-present-no-visible-ray="right"></a-entity>  
  </a-entity>
 
 
