@@ -1,8 +1,8 @@
 <html>
   <head>
-    
-     <!-- <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>  -->
-	  <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.js"></script> 
+
+  	 <!--    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script> -->
+  <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.js"></script>
      <!-- extras-->
      <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
       <!-- teleport -->
@@ -12,7 +12,9 @@
      <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
      <!-- Environment -->
      <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
-	 <script src="oculus_controller_helper.js"></script>
+
+     <script src="oculus_controller_helper.js"></script>
+   	 <script src="level_functions.js"></script>
 
 
   <title>IC Web VR - Daniel Schneider</title>
@@ -21,109 +23,6 @@
 
   <body>
 
-    <script type="text/javascript">
-
-      //Component for accessing the teleport-controls variable prevHitHeight
-      AFRAME.registerComponent('y-offset-control', {
-        resetTeleportOffset: function() {
-          this.el.components['teleport-controls'].prevHitHeight = 0
-        }
-      });
-
-      // call the function in the y-offset-control
-      function setOffset(){
-       var temp = document.querySelector('[y-offset-control]').components['y-offset-control'];
-       temp.resetTeleportOffset();
-      }
-
-      function Level2() {
-        //Show and Hide the Scenes
-        document.getElementById('scene1').setAttribute('visible', 'false');
-        document.getElementById('scene2').setAttribute('visible', 'true');
-        document.getElementById('start_env').setAttribute('environment', 'active: false;');
-        document.getElementById('environment_lvl2').setAttribute('environment', 'active: true;');
-
-        // Set the Camera
-        document.getElementById('cameraRig').setAttribute('position', '100 4 100');
-        setOffset();
-
-        //Set the Sound
-        var oceanmusic = document.querySelector('#oceanmusic');
-        oceanmusic.components.sound.pauseSound();
-        var weed = document.querySelector('#weedmusic');
-        weed.components.sound.pauseSound();
-        var rat = document.querySelector('#ratmusic');
-        rat.components.sound.pauseSound();
-        var drone = document.querySelector('#dronemusic');
-        drone.components.sound.playSound();
-        var atmo = document.querySelector('#atmomusic');
-        atmo.components.sound.playSound();
-      }
-
-      function Level3(){
-        document.getElementById('scene2').setAttribute('visible', 'false');
-        document.getElementById('scene3').setAttribute('visible', 'true');
-        document.getElementById('environment_lvl2').setAttribute('environment', 'active: false;');
-        document.getElementById('env_lvl3').setAttribute('environment', 'active: true;');
-
-        // Set the Camera
-        document.getElementById('cameraRig').setAttribute('position', '227 4 250');
-        setOffset();
-      }
-
-      function Hell() {
-        document.getElementById('scene1').setAttribute('visible', 'false');
-        document.getElementById('hell').setAttribute('visible', 'true');
-        document.getElementById('scene2').setAttribute('visible', 'false');
-        document.getElementById('environment_lvl2').setAttribute('environment', 'active: false;');
-
-        // Set the Camera
-        document.getElementById('cameraRig').setAttribute('position', '-100 4 -100');
-        setOffset();
-
-        var hellanim = document.querySelectorAll('#hellstart'), i;
-        for (i = 0; i < hellanim.length; ++i) {
-          hellanim[i].emit('startafterteleport');
-        }
-
-        var light2 = document.querySelector('#animationEndHell');
-        light2.addEventListener('animationend', function(){
-          backToLvl1();
-          rollBack();
-        });
-
-        var hellsound = document.querySelector('#you_dead');
-        hellsound.components.sound.playSound();
-        var dead = document.querySelector('#dead');
-        dead.components.sound.playSound();
-        var drone = document.querySelector('#dronemusic');
-        drone.components.sound.stopSound();
-        var atmo = document.querySelector('#atmomusic');
-        atmo.components.sound.stopSound();
-      }
-
-
-      function backToLvl1(){
-        document.getElementById('scene1').setAttribute('visible', 'true');
-        document.getElementById('hell').setAttribute('visible', 'false');
-        document.getElementById('start_env').setAttribute('environment', 'active: true;');
-
-        // Set the Camera
-        document.getElementById('cameraRig').setAttribute('position', '10 4 20');
-        setOffset();
-
-      }
-
-      //Reset Hell
-      function rollBack(){
-          var hellanim = document.querySelectorAll('#hellstart'), i;
-        for (i = 0; i < hellanim.length; ++i) {
-          hellanim[i].emit('goBack');
-        }
-      }
-</script>
-
- 
     <a-scene stats vr-mode-ui="enabled: true">
       <a-assets>
         <img id="ziegel" src="textures/wall.jpg">
@@ -152,26 +51,37 @@
 
 <!-- Camera and Teleport -->
 <a-entity id="cameraRig" position="10 4 20">
-<a-entity position="0 1.6 0">
 
+<a-entity id="vivecontrols" position="0 1.6 0">
 <a-entity id='left-controller' controller-with-cursor-if-present="left"></a-entity>
+<!-- Todo: Disable teleport controls if mouse mode -->
+<a-entity id='right-controller' raycaster="objects: .selectable; far: 2"
+    teleport-extras
+    y-offset-control
+    teleport-controls=
+        "cameraRig: #cameraRig;
+        teleportOrigin: #head;
+        startEvents:starttouch;
+        endEvents:endtouch;
+        curveShootingSpeed:20;
+        hitCylinderRadius:0.3;
+        collisionEntities: #tele"
+    controller-with-cursor-if-present-no-visible-ray="right"></a-entity>
+</a-entity>
 
-  <a-entity id='right-controller' raycaster="objects: .selectable; far: 2" 
-		  teleport-extras
-          y-offset-control 
-		  teleport-controls=
-          "cameraRig: #cameraRig;
-          teleportOrigin: #head;
-          startEvents:starttouch;
-          endEvents:endtouch;
-          curveShootingSpeed:20;
-          hitCylinderRadius:0.3;
-          collisionEntities: #tele" 
-		  controller-with-cursor-if-present-no-visible-ray="right"></a-entity>  
- </a-entity>
 
-
-   <a-camera id="head">
+<a-camera id="head">
+<a-entity position="0.1 -0.4 0"  raycaster="objects: .selectable; far: 2"
+    teleport-extras
+    y-offset-control
+    teleport-controls=
+        "cameraRig: #cameraRig;
+        teleportOrigin: #head;
+        startEvents:starttouch;
+        endEvents:endtouch;
+        curveShootingSpeed:20;
+        hitCylinderRadius:0.3;
+        collisionEntities: #tele"></a-entity>
 
     <a-entity id="camera-cursor"
       cursor="fuse:true; fuseTimeout:2000"
@@ -179,11 +89,12 @@
       geometry="primitive:ring"
       scale="0.05 0.05 0.05"
       material="color:blue; shader:flat"
-      position="0 0 -3">
+      position="0 0 -3"
+      animation="property: geometry.thetaLength; startEvents:start-fusing; from: 0; to: 360; dur: 1800; easing: linear; delay:200">
     </a-entity>
   </a-camera>
 
-  
+
 
 </a-entity>
 </a-entity>
@@ -191,7 +102,10 @@
 <!--- Scene 1 ------------------------------------------------------------------------------------------------------------------- -->
 <a-entity id="scene1">
 
-  <a-box  position ="5 5 10" clickbait></a-box>
+  <a-entity opacity="0.7" width="3.5" height="3.5" position="0 2.5 20" rotation="0 90 0" geometry="primitive:plane;height:2.5;width:3.5" material="shader:flat;transparent:true;opacity:0.7;color:#22252a">
+      <a-entity id="button" clickit geometry="width:2.5;height:0.75;depth:0.02" material="shader:flat;side:double;color:#d3d3d4" rotation="" position="-6.383289362546959e-19 0 0.0028747779594564538" text__text_1="value:Disable Controller;zOffset:0.1;color:#000000;align:center;width:5"></a-entity>
+    </a-entity>
+
 
   <!--environment-->
   <a-entity id="start_env" shadow="receive: true" environment="preset: arches; lighting: none; groundYScale: 4; dressingAmount: 5; ground:canyon;"></a-entity>
@@ -203,8 +117,8 @@
   <a-entity geometry="primitive:plane;width:11" material="color:f0e2ae" text="value:You can only Teleport on the Platforms;width:9.68;align:center;color:#000000;letterSpacing:0.23;wrapCount:35.06" position="9.5 0.5 15.51"></a-entity>
 
  <!--Jump Pads-->
-  <a-box src="#ziegel" clickbait id="tele" position="10 0.5 20" rotation="0 90 0" depth="4" height="0.3" width="4" shadow="receive:false"  geometry=""></a-box>
-  <a-box src="#ziegel" clickbait id="tele" position="6.5 5 -15.645" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
+  <a-box src="#ziegel" id="tele" position="10 0.5 20" rotation="0 90 0" depth="4" height="0.3" width="4" shadow="receive:false"  geometry=""></a-box>
+  <a-box src="#ziegel" id="tele" position="6.5 5 -15.645" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
   <a-box src="#ziegel" id="tele" position="20 1 19.6" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
   <a-box src="#ziegel" id="tele" position="24.2 1.9 11.3" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
   <a-box src="#ziegel" id="tele" position="27.4 2.9 0.4" rotation="0 90 0" depth="4" height="0.3" width="4" shadow="receive:false" material="" geometry=""></a-box>
@@ -226,10 +140,10 @@
  <!--Doors-->
  <a-entity position="3.4 6.16 -23.8">
   <!--Green Door-->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200" event-set__mouseenter="color: #008e00" event-set__mouseleave="color: #00b200" onclick="Hell()" material="" obj-model=""></a-obj-model>
+       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THIS DOOR LEADS TO THE GOLD, THE OTHER DOOR LEADS TO DEATH.; width: 7.5; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.11 7.5 -18.01"></a-entity>
   <!--Red Door-->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="8 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000" event-set__mouseenter=" color: #8e0000" event-set__mouseleave="color: #b20000" onclick="Level2()" material="" obj-model=""></a-obj-model>
+       <a-obj-model clickit id="level2" shadow="receive:false" src="#door-obj" position="8 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: ONE OF THESE DOORS LEAD TO THE GOLD, THE OTHER LEADS TO DEATH.; width: 7.5; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="8.16 7.5 -18.01"></a-entity>
  </a-entity>
 
@@ -240,23 +154,23 @@
  <a-box position="14.5 0.5 10" rotation="0 90 0" material="src:#wall;repeat:4 1" shadow="receive:false" geometry="width:9"></a-box>
  <a-box position="4.5 0.5 10" rotation="0 90 0" material="src:#wall;repeat:4 1" shadow="receive:false" geometry="width:9"></a-box>
  <a-entity light="color:#ff3328;type:point;intensity:3.41;distance:10.43;groundColor:#ffffff;decay:0.62" position="9.64 0.5 10"></a-entity>
- <a-ocean id="oceanmusic" position="10 0.5 10" density="5" color="#8b0000" sound="src: url(sounds/music.mp3); autoplay: true; volume: 0.3;" onClick="Hell()"></a-ocean>
+ <a-ocean id="oceanmusic" position="10 0.5 10" density="5" color="#8b0000" sound="src: url(sounds/music.mp3); autoplay: true; volume: 0.2;"></a-ocean>
 
  <!-- Big Rock -->
  <a-entity obj-model="obj: #rock; mtl: #rock-mtl" shadow="receive:false" position="-9.1 -0.2 8.7" rotation="0 180 0" scale="5 5 5"></a-entity>
 
  <!-- Rat + Animation -->
- <a-entity id="ratmusic" gltf-model="#rat" scale="0.025 0.025 0.025" position="-200 1 -5" animation-mixer="duration:8" sound="src: url(sounds/rat.mp3); autoplay:true; loop:true; rolloffFactor: 2.5;">
-  <a-animation attribute="position" dur="3500" fill="forwards" from="-80 1 -5" to="0 1 -5" delay="12000" easing="ease-out"></a-animation>
-  <a-animation attribute="position" dur="3500" fill="forwards" from="0 1 -5" to="80 1.5 -5" delay="20000" easing="linear"></a-animation>
+ <a-entity id="ratmusic" gltf-model="#rat" scale="0.025 0.025 0.025" position="-200 1 -5" animation="property: position; from: -80 1 -5; to: 0 1 -5; dur: 3500; easing: linear; delay:12000"
+                                                                                          animation__2="property: position; from: 0 1 -5; to: 80 1.5 -5; dur: 3500; easing: linear; delay: 20000"
+                                                                                          sound="src: url(sounds/rat.mp3); autoplay:true; loop: true; rolloffFactor: 2">
  </a-entity>
 
  <!-- Tumbleweed + Animation -->
- <a-entity id="weedmusic" gltf-model="#weed" scale="0.004 0.004 0.004" position="28 -3 -75" sound="src: url(sounds/weed.mp3); autoplay: true; loop: true; rolloffFactor:1.5;">
-  <a-animation attribute="position" dur="25000" fill="forwards" from="28 1.2 -75" to="28 1.4 85" delay="3000" easing="linear"></a-animation>
-  <a-animation attribute="position" dur="25000" fill="forwards" from="-20 1.2 -75" to="-20 1.4 100" delay="25000" easing="linear"></a-animation>
-  <a-animation attribute="position" dur="25000" fill="forwards" from="35 1.2 -75" to="35 1.4 85" delay="50000" easing="linear"></a-animation>
-  <a-animation attribute="rotation" dur="2500" repeat="indefinite" to="360 0 360" easing="linear"></a-animation>
+ <a-entity id="weedmusic" gltf-model="#weed" scale="0.004 0.004 0.004" position="28 -3 -75" animation="property: position; from: 28 1.2 -75; to: 28 1.4 85; dur: 25000; easing: easeInOutSine; delay:25000"
+                                                                                            animation__1="property: position; from: -20 1.2 -75; to: -20 1.4 100; dur: 25000; easing: linear; delay:50000"
+                                                                                            animation__2="property: position; from: 35 1.2 -75; to: 28 1.4 85; dur: 25000; easing: linear; delay:75000"
+                                                                                            animation__3="property: rotation; dur: 2500; loop:true; to:360 0 360"
+                                                                                            sound="src: url(sounds/gras.mp3); autoplay: true; loop: true; rolloffFactor: 2">
  </a-entity>
 
  <!-- Cactus -->
@@ -273,8 +187,6 @@
 
 <!--- Scene 2 --------------------------------------------------------------------------------------------------------------------->
 <a-entity id="scene2" visible="false" position="100 0 100">
-
-  <a-box position="5 5 -10" onClick="Level3()"></a-box>
 
  <!-- Environment -->
  <a-entity id="environment_lvl2" environment=" preset:contact; skyType:gradient; fog:0.87; ground:canyon; groundYScale:12;lighting:none; active:false;" shadow="receive: true"></a-entity>
@@ -302,20 +214,19 @@
 
  <a-entity position="11.7 28.1 -40.1" rotation="0 180 0" scale="0.75 0.75 0.75">
   <!--Green Door-->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"event-set__mouseenter=" color: #8e0000" event-set__mouseleave=" color: #b20000" onclick="Hell()"></a-obj-model>
+       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE GREEN DOOR LEADS                                                        TO THE GOLD.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.1 8 -18"></a-entity>
   <!--Red Door-->
-       <a-obj-model id="greendoor" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"event-set__mouseenter=" color: #008e00" event-set__mouseleave=" color: #00b200"  onclick="Level3()"></a-obj-model>
+       <a-obj-model clickit id="level3" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE RED DOOR LEADS                                                        TO THE GOLD.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="7.5 8 -18"></a-entity>
   <!--Blue Door -->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"event-set__mouseenter=" color: #000099" event-set__mouseleave=" color: #0000cc" onclick="Hell()"></a-obj-model>
+       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE RED DOOR LEADS                                                        TO DEATH.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="16.5 8 -18"></a-entity>
 
   <a-entity geometry="height:4;width:12;depth:0.34" material="color:#f0e2ae" text="value:TWO DOORS ARE CORRECT.                  ONE LEADS TO THE GOLD THE OTHER TWO LEAD TO DEATH.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="7.86000591867141 0.05629566394304675 -6.954601167343696" rotation="-90 0 0"></a-entity>
   </a-entity>
 
-  <a-entity id="atmomusic" position="20 35 -30" sound="src: url(sounds/scifi_atmo.mp3); volume:0.1;autoplay: false;loop: true;">
-   <a-animation attribute="rotation" dur="20000" repeat="indefinite" to="0 360 0" easing="linear"></a-animation>
+  <a-entity id="atmomusic" position="20 35 -30" animation="property: rotation; easing:linear; to: 0 360 0; dur: 20000; loop:true;" sound="src: url(sounds/scifi_atmo.mp3); volume:0.1;autoplay: false;loop: true;">
    <a-entity id="dronemusic" gltf-model="#drone" shadow="receive:false" position="50 0 0" scale="5 5 5" sound="src: url(sounds/drone.mp3); autoplay: false; loop: true;"></a-entity>
   </a-entity>
 </a-entity>
@@ -361,13 +272,13 @@
 
 <a-entity position="-31.49267362106491 0.10535851879941927 -20.20429446205793" rotation="" scale="0.75 0.75 0.75">
   <!--Green Door-->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"event-set__mouseenter=" color: #8e0000" event-set__mouseleave=" color: #b20000" onclick=""></a-obj-model>
+       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value:.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.1 8 -18"></a-entity>
   <!--Red Door-->
-       <a-obj-model id="greendoor" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"event-set__mouseenter=" color: #008e00" event-set__mouseleave=" color: #00b200"  onclick=""></a-obj-model>
+       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: .; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="7.5 8 -18"></a-entity>
   <!--Blue Door -->
-       <a-obj-model shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"event-set__mouseenter=" color: #000099" event-set__mouseleave=" color: #0000cc" onclick=""></a-obj-model>
+       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"></a-obj-model>
        <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value:.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="16.5 8 -18"></a-entity>
 
  <a-entity geometry="height:4;width:12;depth:0.34" material="color:#f0e2ae" text="value:.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="7.86000591867141 0.05629566394304675 -6.954601167343696" rotation="-90 0 0"></a-entity>
@@ -377,13 +288,15 @@
 </a-entity>
 <!--- End of Scene 3 --------------------------------------------------------------------------------------------------------------------->
 <!--- (Hölle)--------------------------------------------------------------------------------------------------------->
-<a-entity id="hell" visible="false" position="-100 0 -100">
+<a-entity id="hell_id" visible="false" position="300 0 300">
 
-  <a-light id="hellstart" color="#800909" type="point" intensity="5" distance="25" decay="0.36" groundColor="#000000" position="0 10 0">
-  <a-animation begin="startafterteleport" attribute="intensity" from="5" to="100000" delay="4000" dur="5500"></a-animation>
-  <a-animation begin="goBack" attribute="intensity" from="100000" to="5" dur="10"></a-animation>
-  <a-animation id="animationEndHell" begin="startafterteleport" attribute="color" from="#800909" to="white" delay="4000" dur="5500"></a-animation>
-  <a-animation begin="goBack" attribute="color" from="white" to="#800909" dur="10"></a-animation>
+
+  <a-light id="hellend" color="#800909" type="point" intensity="5" distance="25" decay="0.36" groundColor="#000000" position="0 10 0"
+  animation="property: intensity; startEvents:startafterteleport; easing:linear; from: 5; to: 100000; dur: 5500; delay: 4000;"
+  animation__1="property: intensity; startEvents:goBack; easing:linear; from: 100000; to: 5; dur: 10;"
+  animation__2="property: color; startEvents:startafterteleport; easing:linear; from: #800909; to: #FFFFFF; dur: 5500; delay: 4000;"
+  animation__3="property: color; startEvents:goBack; easing:linear; from: #FFFFFF; to: #800909; dur: 10;">
+
   </a-light>
 
  <!-- Hellfire Box -->
@@ -396,38 +309,40 @@
 
  <!-- Hellfire -->
  <a-entity id="hellfire">
-    <a-ocean id="hellstart" density="15" position="0 1 0" color="#8b0000" scale="2 2 2" speed="5">
-    <a-animation begin="startafterteleport" attribute="position" from="0 1 0" to="0 -1 0" delay="6000" dur="3500" ></a-animation>
-    <a-animation begin="goBack" attribute="position" to="0 1 0" from="0 -1 0" dur="10" ></a-animation>
+    <a-ocean id="hellstart" density="15" position="0 1 0" color="#8b0000" scale="2 2 2" speed="5" animation="property: position; startEvents:startafterteleport; easing:linear; from: 0 1 0; to: 0 -1 0; dur: 3500; delay: 6000;"
+                                                                                                  animation__1="property: position; startEvents:goBack; easing:linear; to: 0 1 0; from: 0 -1 0; dur: 10;">
   </a-ocean>
+
+
     <a-entity rotation="180 90 0">
-        <a-ocean id="hellstart" density="15" position="0 -19 0" color="#8b0000" scale="2 2 2" speed="5">
-  <a-animation begin="startafterteleport" attribute="position" from="0 -19 0" to="0 -26 0" delay="6000" dur="3500"></a-animation>
-  <a-animation begin="goBack" attribute="position" to="0 -19 0" from="0 -26 0" dur="10" ></a-animation>
+        <a-ocean id="hellstart" density="15" position="0 -19 0" color="#8b0000" scale="2 2 2" speed="5" animation="property: position; startEvents:startafterteleport; easing:linear; from: 0 -19 0; to: 0 -26 0; dur: 3500; delay: 6000;"
+                                                                                                        animation__1="property: position; startEvents:goBack; easing:linear; to: 0 -19 0; from: 0 -26 0; dur: 10;">
         </a-ocean>
+
       </a-entity>
       <a-entity rotation="90 90 0">
-        <a-ocean id="hellstart" density="15" position="0 -9.5 -10" color="#8b0000" scale="2 2 2" speed="5">
-  <a-animation begin="startafterteleport" attribute="position" from="0 -9.5 -10" to="0 -14 -10" delay="6000" dur="3500"></a-animation>
-  <a-animation begin="goBack" attribute="position" to="0 -9.5 -10" from="0 -14 -10" dur="10"></a-animation>
+        <a-ocean id="hellstart" density="15" position="0 -9.5 -10" color="#8b0000" scale="2 2 2" speed="5" animation="property: position; startEvents:startafterteleport; easing:linear; from: 0 -9.5 -10; to: 0 -14 -10; dur: 3500; delay: 6000;"
+                                                                                                        animation__1="property: position; startEvents:goBack; easing:linear; to: 0 -9.5 -10; from: 0 -14 -10; dur: 10;">
+
         </a-ocean>
+
       </a-entity>
       <a-entity rotation="-90 90 0">
-        <a-ocean id="hellstart" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5" >
-  <a-animation begin="startafterteleport" attribute="position" from="0 -9.5 10" to="0 -14 10" delay="6000" dur="3500"></a-animation>
-  <a-animation begin="goBack" attribute="position" to="0 -9.5 10" from="0 -14 10" dur="10"></a-animation>
+        <a-ocean id="hellstart" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5" animation="property: position; startEvents:startafterteleport; easing:linear; from: 0 -9.5 10; to: 0 -14 10; dur: 3500; delay: 6000;"
+                                                                                                        animation__1="property: position; startEvents:goBack; easing:linear; to: 0 -9.5 10; from: 0 -14 10; dur: 10;" >
+
         </a-ocean>
+
       </a-entity>
       <a-entity rotation="-90 0 0">
-        <a-ocean id="hellstart" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5">
-  <a-animation  begin="startafterteleport" attribute="position" from="0 -9.5 10" to="0 -14 10" delay="6000" dur="3500"></a-animation>
-    <a-animation begin="goBack" attribute="position" to="0 -9.5 10" from="0 -14 10" dur="10"></a-animation>
+        <a-ocean id="hellstart" density="15" position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5" animation="property: position; startEvents:startafterteleport; easing:linear; from: 0 -9.5 10; to: 0 -14 10; dur: 3500; delay: 6000;"
+                                                                                                        animation__1="property: position; startEvents:goBack; easing:linear; to: 0 -9.5 10; from: 0 -14 10; dur: 10;">
         </a-ocean>
+
       </a-entity>
       <a-entity rotation="-90 -180 0">
-        <a-ocean id="hellstart" density="15"position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5">
-  <a-animation begin="startafterteleport" attribute="position" from="0 -9.5 10" to="0 -14 10" delay="6000" dur="3000"></a-animation>
-  <a-animation begin="goBack" attribute="position" to="0 -9.5 10" from="0 -14 10" dur="10"></a-animation>
+        <a-ocean id="hellstart" density="15"position="0 -9.5 10" color="#8b0000" scale="2 2 2" speed="5" animation="property: position; startEvents:startafterteleport; easing:linear; from: 0 -9.5 10; to: 0 -14 10; dur: 3500; delay: 6000;"
+                                                                                                        animation__1="property: position; startEvents:goBack; easing:linear; to: 0 -9.5 10; from: 0 -14 10; dur: 10;">
         </a-ocean>
       </a-entity>
  </a-entity>

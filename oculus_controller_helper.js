@@ -113,54 +113,72 @@
     }
   });
 
+  //Hover over clickable Object
   AFRAME.registerComponent('selecting', {
     init: function () {
       this.oldColor = this.el.getAttribute('material').color;
-      this.el.setAttribute('material','color','#4F4'); 
+      this.el.setAttribute('material','color','#FFD700');
+      var cursor = document.querySelector('#camera-cursor');
+      cursor.emit('start-fusing');
+
     },
     remove: function () {
       if (!this.oldColor) { return; }
-      this.el.setAttribute('material', 'color', this.oldColor); 
-    }
-  });
-  
-  AFRAME.registerComponent('selected', {
-    init: function () {
-      this.oldColor = this.el.getAttribute('material').color;
-      this.el.setAttribute('material','color','#48F'); 
-    },
-    remove: function () {
-      if (!this.oldColor) { return; }
-      this.el.setAttribute('material', 'color', this.oldColor); 
+      this.el.setAttribute('material', 'color', this.oldColor);
     }
   });
 
+//What should the raycaster do if interaction valid?
+  AFRAME.registerComponent('selected', {
+    init: function () {
+      var x = this.el.getAttribute('id');
+
+      switch (x) {
+  case "hell":
+    Hell();
+    break;
+  case "level1":
+    backToLvl1();
+    break;
+  case "level2":
+    Level2();
+    break;
+  case "level3":
+    Level3();
+    break;
+  case "mouse":
+    useMouse();
+    break;
+  case "button":
+    disableController();
+    break;
+    }
+    }
+  });
+
+//
   AFRAME.registerComponent('clickable', {
     init: function () { this.el.classList.add('clickable'); },
     remove: function () { this.el.classList.remove('clickable'); }
   });
-  
-  AFRAME.registerComponent('clickbait', {
+
+
+  //Component for giving Enities the power to get clicked
+  AFRAME.registerComponent('clickit', {
     dependencies: ['clickable'],
-    
     init: function () {
       var el = this.el;
       el.addEventListener('mouseenter', function (evt) {
-        console.log('mouseenter ' + JSON.stringify(evt.target.getAttribute('position')));
-        evt.target.removeAttribute('selected'); 
+        evt.target.removeAttribute('selected');
         evt.target.setAttribute('selecting', '');
       });
-      
       el.addEventListener('mouseleave', function (evt) {
-        console.log('mouseleave ' + JSON.stringify(evt.target.getAttribute('position')));
-        evt.target.removeAttribute('selecting'); 
-        evt.target.removeAttribute('selected'); 
+        evt.target.removeAttribute('selecting');
+        evt.target.removeAttribute('selected');
       });
-      
       el.addEventListener('click', function (evt) {
-        console.log('click ' + JSON.stringify(evt.target.getAttribute('position')));
-        evt.target.removeAttribute('selecting'); 
-        evt.target.setAttribute('selected', '');         
+        evt.target.removeAttribute('selecting');
+        evt.target.setAttribute('selected', '');
       });
     }
   });
