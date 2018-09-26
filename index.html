@@ -1,8 +1,11 @@
 <html>
   <head>
 
-  	 <!--    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script> -->
-  <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.js"></script>
+  <!-- Version 0.8.2 makes moving with mouse possible but breaks all animations and controller interactions
+     <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>-->
+
+    <!-- Master Verison makes all Controller usable but breaks mouse controlls and cursor-->
+    <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.js"></script>
      <!-- extras-->
      <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
       <!-- teleport -->
@@ -29,6 +32,8 @@
         <img id="wall" src="textures/wall1.jpg">
         <img id="floor" src ="textures/floor.png">
         <img id="wood" src ="textures/wood.png">
+        <img id="hex" src ="textures/hex.jpg">
+        <img id="wood2" src ="textures/wood2.png">
         <a-asset-item id="door-obj" src="models/door/door.obj"></a-asset-item>
         <a-asset-item id="rock" src="models/rock/rock.obj"></a-asset-item>
         <a-asset-item id="rock-mtl" src="models/rock/rock.mtl"></a-asset-item>
@@ -39,11 +44,24 @@
         <a-asset-item id="weed" src="models/tumbleweed/scene.gltf"></a-asset-item>
         <a-asset-item id="drone" src="models/drone/scene.gltf"></a-asset-item>
         <a-asset-item id="sign" src="models/sign/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign1" src="models/sign1/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign2" src="models/sign2/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign3" src="models/sign3/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign4" src="models/sign4/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign5" src="models/sign5/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign6" src="models/sign6/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign7" src="models/sign7/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign8" src="models/sign8/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign9" src="models/sign9/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign10" src="models/sign10/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign11" src="models/sign11/scene.gltf"></a-asset-item>
+        <a-asset-item id="sign12" src="models/sign12/scene.gltf"></a-asset-item>
         <a-asset-item id="house" src="models/house/scene.gltf"></a-asset-item>
         <a-asset-item id="campfire" src="models/campfire/scene.gltf"></a-asset-item>
         <a-asset-item id="tree1" src="models/tree1/scene.gltf"></a-asset-item>
         <a-asset-item id="tree2" src="models/tree2/scene.gltf"></a-asset-item>
         <a-asset-item id="tree3" src="models/tree3/scene.gltf"></a-asset-item>
+        <a-asset-item id="treasure" src="models/treasure/scene.gltf"></a-asset-item>
       </a-assets>
 
 <!-- global light -->
@@ -63,7 +81,7 @@
         teleportOrigin: #head;
         startEvents:starttouch;
         endEvents:endtouch;
-        curveShootingSpeed:20;
+        curveShootingSpeed:25;
         hitCylinderRadius:0.3;
         collisionEntities: #tele"
     controller-with-cursor-if-present-no-visible-ray="right"></a-entity>
@@ -79,7 +97,7 @@
         teleportOrigin: #head;
         startEvents:starttouch;
         endEvents:endtouch;
-        curveShootingSpeed:20;
+        curveShootingSpeed:25;
         hitCylinderRadius:0.3;
         collisionEntities: #tele"></a-entity>
 
@@ -102,7 +120,7 @@
 <!--- Scene 1 ------------------------------------------------------------------------------------------------------------------- -->
 <a-entity id="scene1">
 
-  <a-entity opacity="0.7" width="3.5" height="3.5" position="0 2.5 20" rotation="0 90 0" geometry="primitive:plane;height:2.5;width:3.5" material="shader:flat;transparent:true;opacity:0.7;color:#22252a">
+  <a-entity id="buttoncontainer" opacity="0.7" width="3.5" height="3.5" position="0 2.5 20" rotation="0 90 0" geometry="primitive:plane;height:2.5;width:3.5" material="shader:flat;transparent:true;opacity:0.7;color:#22252a">
       <a-entity id="button" clickit geometry="width:2.5;height:0.75;depth:0.02" material="shader:flat;side:double;color:#d3d3d4" rotation="" position="-6.383289362546959e-19 0 0.0028747779594564538" text__text_1="value:Disable Controller;zOffset:0.1;color:#000000;align:center;width:5"></a-entity>
     </a-entity>
 
@@ -113,9 +131,6 @@
   <!--light scene 1-->
   <a-entity light="castShadow:true;intensity:0.5;shadowCameraTop:45;shadowCameraBottom:-75;shadowCameraRight:35;shadowCameraLeft:-50;shadowMapHeight:2048;shadowMapWidth:2048;" position="-3.25 28.75 0"></a-entity>
 
-  <!-- Text Start-->
-  <a-entity geometry="primitive:plane;width:11" material="color:f0e2ae" text="value:You can only Teleport on the Platforms;width:9.68;align:center;color:#000000;letterSpacing:0.23;wrapCount:35.06" position="9.5 0.5 15.51"></a-entity>
-
  <!--Jump Pads-->
   <a-box src="#ziegel" id="tele" position="10 0.5 20" rotation="0 90 0" depth="4" height="0.3" width="4" shadow="receive:false"  geometry=""></a-box>
   <a-box src="#ziegel" id="tele" position="6.5 5 -15.645" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
@@ -124,27 +139,24 @@
   <a-box src="#ziegel" id="tele" position="27.4 2.9 0.4" rotation="0 90 0" depth="4" height="0.3" width="4" shadow="receive:false" material="" geometry=""></a-box>
   <a-box src="#ziegel" id="tele" position="16 4 -1.8" rotation="0 90 0" depth="4" height="0.3" width="4" shadow="receive:false" material="" geometry=""></a-box>
   <a-box src="#ziegel" id="tele" position="6.5 5 -8" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
+  <a-box src="#ziegel" id="tele" position="7 7 -31" rotation="0 90 0" depth="8" height="0.3" width="8" shadow="receive:false"></a-box>
 
  <!--box for doors -->
- <a-box id="tele" position="7 2.65 -32" rotation="0 90 0"  geometry="depth:20;width:20;height:7" material="src:#wall;repeat:5 5"></a-box>
+ <a-box position="7 2.65 -32" shadow="receive:true" rotation="0 90 0" geometry="depth:20;width:20;height:7" material="src:#wall;repeat:5 5"></a-box>
  <a-box position="7 6 -41.9" rotation="90 0 0" height="0.3"  geometry="depth:20;width:20" material="src:#wall;repeat:5 5"></a-box>
 
- <!--Door Info Text-->
- <a-entity geometry="height:6;width:13" material="color:#f0e2ae" text="value:ON EVER EVERY DOOR IS A STATEMENT. IT MAY BE TRUE OR FALSE. IF A STATEMENT ON A DOOR IS TRUE, THEN ALL STATEMENTS ON THAT DOOR ARE TRUE.
- IF A STATEMENT ON A DOOR IS FALSE, THEN ALL STATEMENTS ON THAT DOOR ARE FALSE.;width:12.77;align:center;color:#000000;letterSpacing:1;wrapCount:39.75000000000001;opacity:2;zOffset:0.505;tabSize:3.71;lineHeight:60"
- rotation="-90 0 0" position="6.6 5.8 -26.5"></a-entity>
-
- <a-entity geometry="height:2.5;width:11;depth:0.34" material="color:#f0e2ae" text="value:EXACTLY ONE DOOR IS CORRECT.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="6.6 6 -36" rotation="-90 0 0"></a-entity>
-
+ <!--Door Info Sign-->
+ <a-entity gltf-model="#sign1" shadow="receive:false" rotation="0 90 0" position="0 6 -20" scale="0.7 0.7 0.7"></a-entity>
+ <a-entity gltf-model="#sign2" shadow="receive:false" position="2.8 6.5 -41" scale="0.25 0.25 0.25"></a-entity>
 
  <!--Doors-->
  <a-entity position="3.4 6.16 -23.8">
   <!--Green Door-->
-       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"></a-obj-model>
-       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THIS DOOR LEADS TO THE GOLD, THE OTHER DOOR LEADS TO DEATH.; width: 7.5; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.11 7.5 -18.01"></a-entity>
+       <a-obj-model clickit id="hell" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"></a-obj-model>
+       <a-entity gltf-model="#sign5" shadow="receive:false" position="-6 6 -17.3" scale="0.3 0.3 0.3" rotation="20 0 0"></a-entity>
   <!--Red Door-->
-       <a-obj-model clickit id="level2" shadow="receive:false" src="#door-obj" position="8 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"></a-obj-model>
-       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: ONE OF THESE DOORS LEAD TO THE GOLD, THE OTHER LEADS TO DEATH.; width: 7.5; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="8.16 7.5 -18.01"></a-entity>
+       <a-obj-model clickit id="level2" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="8 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"></a-obj-model>
+       <a-entity gltf-model="#sign6" shadow="receive:false" position="3 6 -17.3" scale="0.3 0.3 0.3" rotation="20 0 0"></a-entity>
  </a-entity>
 
  <!-- Lava Pool-->
@@ -160,8 +172,8 @@
  <a-entity obj-model="obj: #rock; mtl: #rock-mtl" shadow="receive:false" position="-9.1 -0.2 8.7" rotation="0 180 0" scale="5 5 5"></a-entity>
 
  <!-- Rat + Animation -->
- <a-entity id="ratmusic" gltf-model="#rat" scale="0.025 0.025 0.025" position="-200 1 -5" animation="property: position; from: -80 1 -5; to: 0 1 -5; dur: 3500; easing: linear; delay:12000"
-                                                                                          animation__2="property: position; from: 0 1 -5; to: 80 1.5 -5; dur: 3500; easing: linear; delay: 20000"
+ <a-entity id="ratmusic" gltf-model="#rat" scale="0.025 0.025 0.025" position="-200 1 -5" animation="property: position; from: -100 2 -5; to: 0 1 -5; dur: 3500; easing: linear; delay:12000"
+                                                                                          animation__2="property: position; from: 0 1 -5; to: 100 2 -5; dur: 3500; easing: linear; delay: 20000"
                                                                                           sound="src: url(sounds/rat.mp3); autoplay:true; loop: true; rolloffFactor: 2">
  </a-entity>
 
@@ -181,7 +193,7 @@
  <a-entity obj-model="obj:#rockset; mtl:#rockset_mtl" shadow="receive:false" position="-29.3 -0.4 -25.4" rotation="0.61 146.52 0" scale="3 3 3"></a-entity>
 
  <!-- Sign -->
- <a-entity gltf-model="#sign" shadow="receive:false" position="-2.1 1 6.7" scale="0.7 0.7 0.7"></a-entity>
+ <a-entity gltf-model="#sign" shadow="receive:false" position="1.5 1 6.5" scale="0.5 0.5 0.5"></a-entity>
 </a-entity>
 <!--- End of Scene 1 ---------------------------------------------------------------------------------------------------------------->
 
@@ -205,33 +217,34 @@
  <a-box src="#floor" id="tele" position="21.16444966412203 20 -33.18188411254587" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
  <a-box src="#floor" id="tele" position="23.93548083980268 23 -52.05236179403322" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
  <a-box src="#floor" id="tele" position="5.517463059651618 26 -55.348915421759436" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
- <a-box src="#floor" id="tele" position="6 28 -36.5" rotation="0 90 0" depth="20" height="0.3" width="20"  shadow="receive:false" material="repeat:5 5"></a-box>
+ <a-box src="#floor" id="tele" position="6 29 -38" rotation="0 90 0" depth="8" height="0.3" width="8" shadow="receive:false"></a-box>
 
- <a-box src="#floor" position="6 32.85 -26.4" rotation="90 0 0" depth="20" height="0.3" width="20" shadow="receive:false" material="repeat:5 5" geometry="depth:10"></a-box>
- <a-box src="#floor" material="side: double" position="16 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20"  material="repeat:5 5" geometry="primitive:triangle;vertexA:-5.75 5.3 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false"></a-box>
- <a-box src="#floor" material="side:double" position="-4 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20"  material="repeat:5 5" geometry="primitive:triangle;vertexA:-5.75 5.29 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false" scale="1 1 2.58"></a-box>
+ <a-box src="#hex" shadow="receive:true" position="6 28 -36.5" rotation="0 90 0" depth="20" height="0.3" width="20"  shadow="receive:false" material="repeat:5 5"></a-box>
+ <a-box src="#hex" position="6 32.85 -26.4" rotation="90 0 0" depth="20" height="0.3" width="20" shadow="receive:false" material="repeat:5 5" geometry="depth:10"></a-box>
+ <a-box src="#hex" material="side: double" position="16 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20"  material="repeat:5 5" geometry="primitive:triangle;vertexA:-5.75 5.3 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false"></a-box>
+ <a-box src="#hex" material="side:double" position="-4 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20"  material="repeat:5 5" geometry="primitive:triangle;vertexA:-5.75 5.29 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false" scale="1 1 2.58"></a-box>
 
 
  <a-entity position="11.7 28.1 -40.1" rotation="0 180 0" scale="0.75 0.75 0.75">
   <!--Green Door-->
-       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"></a-obj-model>
-       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE GREEN DOOR LEADS                                                        TO THE GOLD.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.1 8 -18"></a-entity>
+       <a-obj-model clickit id="hell" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"></a-obj-model>
+       <a-entity gltf-model="#sign7" shadow="receive:false" position="-6 7 -17.35" scale="0.3 0.3 0.3" rotation="20 0 0"></a-entity>
   <!--Red Door-->
-       <a-obj-model clickit id="level3" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"></a-obj-model>
-       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE RED DOOR LEADS                                                        TO THE GOLD.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="7.5 8 -18"></a-entity>
+       <a-obj-model clickit id="level3" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"></a-obj-model>
+       <a-entity gltf-model="#sign8" shadow="receive:false" position="2.5 7 -17.35" scale="0.3 0.3 0.3" rotation="20 0 0"></a-entity>
   <!--Blue Door -->
-       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"></a-obj-model>
-       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: THE RED DOOR LEADS                                                        TO DEATH.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="16.5 8 -18"></a-entity>
+       <a-obj-model clickit id="hell" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"></a-obj-model>
+       <a-entity gltf-model="#sign9" shadow="receive:false" position="11.5 7 -17.35" scale="0.3 0.3 0.3" rotation="20 0 0"></a-entity>
 
-  <a-entity geometry="height:4;width:12;depth:0.34" material="color:#f0e2ae" text="value:TWO DOORS ARE CORRECT.                  ONE LEADS TO THE GOLD THE OTHER TWO LEAD TO DEATH.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="7.86000591867141 0.05629566394304675 -6.954601167343696" rotation="-90 0 0"></a-entity>
-  </a-entity>
+ <a-entity gltf-model="#sign3" shadow="receive:false" rotation="0 90 0" position="-4.20 0.4 -2" scale="0.5 0.5 0.5"></a-entity>
 
-  <a-entity id="atmomusic" position="20 35 -30" animation="property: rotation; easing:linear; to: 0 360 0; dur: 20000; loop:true;" sound="src: url(sounds/scifi_atmo.mp3); volume:0.1;autoplay: false;loop: true;">
+  <a-entity id="atmomusic" position="20 35 -30" animation="property: rotation; easing:linear; to: 0 360 0; dur: 20000; autoplay: true; loop:true;" sound="src: url(sounds/scifi_atmo.mp3); volume:0.1;autoplay: false;loop: true;">
    <a-entity id="dronemusic" gltf-model="#drone" shadow="receive:false" position="50 0 0" scale="5 5 5" sound="src: url(sounds/drone.mp3); autoplay: false; loop: true;"></a-entity>
   </a-entity>
 </a-entity>
+</a-entity>
 <!--- Scene 3 --------------------------------------------------------------------------------------------------------------------->
-<a-entity id="scene3" visible="false" position="200 0 200">
+<a-entity id="scene3" visible="false" position="200 0 200" sound="src: url(sounds/birds.mp3); autoplay: false; loop: true; volume: 3;">
 
 <a-entity id="env_lvl3" shadow="receive: true" environment="preset: forest;active:false;lighting:none;groundYScale:40; dressingAmount: 30;ground:hills;dressingScale:20;seed:8;playArea:1.3;fog:0.7;"></a-entity>
 
@@ -239,18 +252,19 @@
 <a-entity position="-2.351 52.39591886314297 18.022" visible="" rotation="" light="castShadow:true;shadowCameraTop:0;shadowCameraRight:100;shadowCameraBottom:-65;shadowCameraLeft:-100;shadowCameraFar:150;shadowCameraFov:100;shadowCameraNear:-100;shadowMapHeight:2048;shadowMapWidth:2048;angle:0"></a-entity>
 
 <!-- Teleporter -->
-<a-box src="#wood" id="tele" position="27 0.2 50" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
+<a-box src="#wood" id="tele" position="27 0.7 50" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
 <a-box src="#wood" id="tele" position="15 2 40" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
 <a-box src="#wood" id="tele" position="10 4 24" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
 <a-box src="#wood" id="tele" position="5 4 10" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
 <a-box src="#wood" id="tele" position="-10 4 -4" rotation="0 90 0" depth="4" height="0.3" width="4"  shadow="receive:false" material="" geometry=""></a-box>
+<a-box src="#wood" id="tele" position="-25 0.6 -23" rotation="0 90 0" depth="8" height="0.3" width="8" shadow="receive:false"></a-box>
 
 <!-- Platform -->
 <a-entity position="-19.618667627281354 -27.989570112797495 -60.43340873187219" rotation="0 180 0">
-  <a-box src="#wood" id="tele" position="6.058532064814585 28 -36.5" rotation="0 90 0" depth="20" height="0.3" width="20"  shadow="receive:false" material="repeat:5 5" geometry=""></a-box>
-  <a-box src="#wood" position="6 32.85 -26.4" rotation="90 0 0" depth="20" height="0.3" width="20" shadow="receive:false" material="repeat:5 5" geometry="depth:10"></a-box>
-  <a-box src="#wood" material="side:double" position="16 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20" geometry="primitive:triangle;vertexA:-5.75 5.3 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false"></a-box>
-  <a-box src="#wood" material="side:double" position="-4 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20" geometry="primitive:triangle;vertexA:-5.75 5.29 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false" scale="1 1 2.58"></a-box>
+  <a-box src="#wood2" position="6.058532064814585 28 -36.5" rotation="0 90 0" depth="20" height="0.3" width="20"  shadow="receive:true" material="repeat:5 5" geometry=""></a-box>
+  <a-box src="#wood2" position="6 32.85 -26.4" rotation="90 0 0" depth="20" height="0.3" width="20" shadow="receive:false" material="repeat:5 5" geometry="depth:10"></a-box>
+  <a-box src="#wood2" material="side:double" position="16 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20" geometry="primitive:triangle;vertexA:-5.75 5.3 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false"></a-box>
+  <a-box src="#wood2" material="side:double" position="-4 32.57 -32" rotation="0 90 0" depth="20" height="0.3" width="20" geometry="primitive:triangle;vertexA:-5.75 5.29 0;vertexB:-5.75 -4.75 0;vertexC:14.5 -4.75 0;buffer:false" scale="1 1 2.58"></a-box>
 </a-entity>
 
 <!-- House & Trees-->
@@ -272,30 +286,48 @@
 
 <a-entity position="-31.49267362106491 0.10535851879941927 -20.20429446205793" rotation="" scale="0.75 0.75 0.75">
   <!--Green Door-->
-       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"></a-obj-model>
-       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value:.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="-1.1 8 -18"></a-entity>
+       <a-obj-model clickit id="hell" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="-1 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#b20000"></a-obj-model>
+       <a-entity gltf-model="#sign10" shadow="receive:false" position="-6 7 -17.5" scale="0.3 0.3 0.3" rotation="20 0 0"></a-entity>
   <!--Red Door-->
-       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"></a-obj-model>
-       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value: .; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="7.5 8 -18"></a-entity>
+       <a-obj-model clickit id="hell" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="7.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#00b200"></a-obj-model>
+       <a-entity gltf-model="#sign11" shadow="receive:false" position="2.5 7 -17.5" scale="0.3 0.3 0.3" rotation="20 0 0"></a-entity>
   <!--Blue Door -->
-       <a-obj-model clickit id="hell" shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"></a-obj-model>
-       <a-entity geometry="height:2;width:7;depth:0.34" material="color:#f0e2ae" text="value:.; width: 10; align: center; color: #000000; letterSpacing: 1; wrapCount: 35; opacity: 2; zOffset: 0.185; tabSize: 3.71; lineHeight: 60" position="16.5 8 -18"></a-entity>
+       <a-obj-model clickit id="gold" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="16.5 3.2 -18" rotation="0 180 0" scale="0.8 0.8 0.5" color="#0000cc"></a-obj-model>
+       <a-entity gltf-model="#sign12" shadow="receive:false" position="11.5 7 -17.5" scale="0.3 0.3 0.3" rotation="20 0 0"></a-entity>
 
- <a-entity geometry="height:4;width:12;depth:0.34" material="color:#f0e2ae" text="value:.;width:12.1;align:center;color:#000000;letterSpacing:1;wrapCount:35;opacity:2;zOffset:0.185;tabSize:3.71;lineHeight:75" position="7.86000591867141 0.05629566394304675 -6.954601167343696" rotation="-90 0 0"></a-entity>
+<a-entity gltf-model="#sign4" shadow="receive:false" rotation="0 90 0" position="-4 0 -2" scale="0.5 0.5 0.5"></a-entity>
 
  </a-entity>
 
 </a-entity>
-<!--- End of Scene 3 --------------------------------------------------------------------------------------------------------------------->
+<!--- End of Scene 3 Start of Gold--------------------------------------------------------------------------------------------------------------------->
+<a-entity id="goldlevel" visible="false" position="400 0 400" sound="src: url(sounds/gold.mp3); autoplay: false;">
+<!-- Treasure Room -->
+  <a-plane rotation="-90 0 0"  geometry="height:30;width:30" color="black" shadow="receive: true"></a-plane>
+  <a-plane rotation="-180 90 0" position="14 12 0" geometry="height:30;width:30" color="black"></a-plane>
+  <a-plane rotation="0 90 0" position="-14 12 0" geometry="height:30;width:30" color="black"></a-plane>
+  <a-plane position="0 12 -14" geometry="height:30;width:30" color="black"></a-plane>
+  <a-plane rotation="0 -180 0" position="0 12 14" geometry="height:30;width:30"color="black" ></a-plane>
+  <a-plane rotation="-270 0 0" geometry="height:30;width:30" position="0 26 0" color="black" ></a-plane>
+
+  <a-light castshadow="true" color="#fcf7ba" type="point" light="type:spot;intensity:7;angle:30;castShadow:true" position="0 21 -8" rotation="-106 0 0"></a-light>
+
+  <a-entity clickit id="goldsound" gltf-model="#treasure" shadow="receive:false" position="-7 1.6 -2.9" scale="2 2 2" rotation="0 45 0" sound="src: url(sounds/coins.mp3); autoplay: false;"></a-entity>
+  <a-entity clickit id="goldsound" gltf-model="#treasure" shadow="receive:false" position="-0.5 1.6 -5.5" scale="2 2 2" rotation="0 0 0" sound="src: url(sounds/coins.mp3); autoplay: false;"></a-entity>
+  <a-entity clickit id="goldsound" gltf-model="#treasure" shadow="receive:false" position="6 1.6 -2.75" scale="2 2 2" rotation="0 -45 0" sound="src: url(sounds/coins.mp3); autoplay: false;"></a-entity>
+
+  <a-obj-model clickit id="level1" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="0 3.2 14" rotation="0 0 0" scale="0.8 0.8 0.5" color="#FFD700"></a-obj-model>
+
+</a-entity>
 <!--- (Hölle)--------------------------------------------------------------------------------------------------------->
 <a-entity id="hell_id" visible="false" position="300 0 300">
 
 
   <a-light id="hellend" color="#800909" type="point" intensity="5" distance="25" decay="0.36" groundColor="#000000" position="0 10 0"
-  animation="property: intensity; startEvents:startafterteleport; easing:linear; from: 5; to: 100000; dur: 5500; delay: 4000;"
-  animation__1="property: intensity; startEvents:goBack; easing:linear; from: 100000; to: 5; dur: 10;"
-  animation__2="property: color; startEvents:startafterteleport; easing:linear; from: #800909; to: #FFFFFF; dur: 5500; delay: 4000;"
-  animation__3="property: color; startEvents:goBack; easing:linear; from: #FFFFFF; to: #800909; dur: 10;">
+  animation="property: intensity; startEvents:startafterteleport; easing:linear; from: 5; to: 100000; dur: 5500; delay: 4000; loop:0;"
+  animation__1="property: intensity; startEvents:goBack; easing:linear; from: 100000; to: 5; dur: 10; loop:0;"
+  animation__2="property: color; startEvents:startafterteleport; easing:linear; from: #800909; to: #FFFFFF; dur: 5500; delay: 4000;loop:0;"
+  animation__3="property: color; startEvents:goBack; easing:linear; from: #FFFFFF; to: #800909; dur: 10; loop:0;">
 
   </a-light>
 

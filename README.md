@@ -13,6 +13,7 @@ live-server
 http://127.0.0.1:8080/
 
 
+
 Models:
 
 door: https://free3d.com/3d-model/metal-door-34303.html
@@ -41,6 +42,11 @@ tree3: https://sketchfab.com/models/75fba1cab5ec4f2796579e784e4e6fb3
 
 campfire: https://sketchfab.com/models/b2108ef43be241e9b8ea716b47873bf5
 
+treasure: https://sketchfab.com/models/0b8cbed26343414ab9f28ba6b5f023de
+
+door: https://freesound.org/people/InspectorJ/sounds/342241/
+
+
 
 Sounds:
 
@@ -54,10 +60,25 @@ piano music: https://www.youtube.com/watch?v=KrSjpqNEWmE
 
 you died: https://www.youtube.com/watch?v=j_nV2jcTFvA
 
+forest birds: https://freesound.org/people/VKProduktion/sounds/231537/
+
+coins: https://www.youtube.com/watch?v=7q7AZRH1sAQ
+
+
 Puzzles: Calvin Weibel
+
+
 
 Textures:
 
 Wood: https://freestocktextures.com/texture/brown-wooden-planks,1041.html
 
+Wood2: https://freestocktextures.com/texture/faded-old-wooden-boards,991.html
+
 Wall: https://pixabay.com/de/wand-block-textur-backstein-muster-846265/
+
+Scifi: https://opengameart.org/content/4096-scifi-hex-tiles-pbr-texture
+
+
+
+Text to Speech: https://www.texttomp3.online/

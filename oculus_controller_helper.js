@@ -1,184 +1,138 @@
-  AFRAME.registerComponent('controller-cursor', {
-    schema: {
-      downEvents: {type: 'array', default: ['triggerdown', 'trackpaddown', 'thumbstickdown']},
-      upEvents: {type: 'array', default: ['triggerup', 'trackpadup', 'thumbstickup']},
-    },
+AFRAME.registerComponent('controller-cursor', {
+   // dependencies: ['cursor'],
 
-    init: function () {
-      this.el.setAttribute('cursor', 'fuse', false);
-      this.onDown = this.onDown.bind(this);
-      this.onUp = this.onUp.bind(this);
-    },
+   // daydream-controller doesn't have a trigger.
+   schema: {
+     downEvents: {type: 'array', default: ['triggerdown', 'trackpaddown', 'thumbstickdown']},
+     upEvents: {type: 'array', default: ['triggerup', 'trackpadup', 'thumbstickup']},
+   },
 
-    play: function () {
-      var el = this.el;
-      var self = this;
-      this.data.downEvents.forEach(function (eventName) {
-        el.addEventListener(eventName, self.onDown);
-      });
-      this.data.upEvents.forEach(function (eventName) {
-        el.addEventListener(eventName, self.onUp);
-      });
-    },
+   init: function () {
+     // We want to use controller buttons, so don't fuse.
+     this.el.setAttribute('cursor', 'fuse', false);
+     this.onDown = this.onDown.bind(this);
+     this.onUp = this.onUp.bind(this);
+   },
 
-    pause: function () {
-      var el = this.el;
-      var self = this;
-      this.data.downEvents.forEach(function (eventName) {
-        el.removeEventListener(eventName, self.onDown);
-      });
-      this.data.upEvents.forEach(function (eventName) {
-        el.removeEventListener(eventName, self.onUp);
-      });
-    },
+   play: function () {
+     var el = this.el;
+     // Samsung Internet doesn't like ES6 syntax!
+     var self = this;
+     this.data.downEvents.forEach(function (eventName) {
+       el.addEventListener(eventName, self.onDown);
+     });
+     this.data.upEvents.forEach(function (eventName) {
+       el.addEventListener(eventName, self.onUp);
+     });
+   },
 
-    onDown: function (evt) {
-      var cursor = this.el.components.cursor;
-      cursor.onCursorDown ? cursor.onCursorDown() : cursor.onMouseDown();
-    },
-    onUp: function (evt) {
-      var cursor = this.el.components.cursor;
-      cursor.onCursorUp ? cursor.onCursorUp() : cursor.onMouseUp();
-    }
-  });
+   pause: function () {
+     var el = this.el;
+     // Samsung Internet doesn't like ES6 syntax!
+     var self = this;
+     this.data.downEvents.forEach(function (eventName) {
+       el.removeEventListener(eventName, self.onDown);
+     });
+     this.data.upEvents.forEach(function (eventName) {
+       el.removeEventListener(eventName, self.onUp);
+     });
+   },
 
-  AFRAME.registerComponent("controller-model-if-present", {
-    controllerComponents: ['oculus-touch-controls', 'vive-controls', 'daydream-controls', 'gearvr-controls'],
-    schema: { type: 'string' },
-    init: function () {
-      var el = this.el;
-      el.addEventListener('controllerconnected', function (evt) {
-        el.setAttribute('visible', true);
-        el.setAttribute('tracked-controls', 'rotationOffset', 0);
-        el.setAttribute(evt.detail.name, 'rotationOffset', 0);
-        el.setAttribute(evt.detail.name, 'model', true);
-        evt.detail.component.updateControllerModel();
-      });
-      this.controllerComponents.forEach(function(name) { this.el.setAttribute(name, 'hand', this.data); }.bind(this));
-      this.el.setAttribute('visible', false);
-    }
-  });
+   onDown: function (evt) {
+     var cursor = this.el.components.cursor;
+     cursor.onCursorDown ? cursor.onCursorDown() : cursor.onMouseDown();
+   },
+   onUp: function (evt) {
+     var cursor = this.el.components.cursor;
+     cursor.onCursorUp ? cursor.onCursorUp() : cursor.onMouseUp();
+   }
+ });
 
-  AFRAME.registerComponent("controller-with-cursor-if-present", {
-    schema: {type: 'string'},
-    init: function() {
-      this.el.setAttribute('controller-model-if-present', this.data);
+ AFRAME.registerComponent("controller-model-if-present", {
+   controllerComponents: ['oculus-touch-controls', 'vive-controls', 'daydream-controls', 'gearvr-controls'],
+   schema: { type: 'string' },
+   init: function () {
+     var el = this.el;
+     // install event handler
+     el.addEventListener('controllerconnected', function (evt) {
+       // we've got something, make it visible
+       el.setAttribute('visible', true);
+       // undo hand-model rotation offset
+       el.setAttribute('tracked-controls', 'rotationOffset', 0);
+       el.setAttribute(evt.detail.name, 'rotationOffset', 0);
+       // use controller model
+       el.setAttribute(evt.detail.name, 'model', true);
+       // setAttribute doesn't make model appear, so force
+       evt.detail.component.updateControllerModel();
+     });
 
-      var ray = document.createElement('a-box');
-      ray.setAttribute('class', 'not-clickable');
-      ray.setAttribute('width', 0.001);
-      ray.setAttribute('height', 0.001);
-      ray.setAttribute('depth', 100);
-      ray.setAttribute('position', {x:0, y:0, z: -50});
-      ray.setAttribute('color', 'green');
-      ray.setAttribute('opacity', 0.95);
-      this.el.appendChild(ray);
+     // Use various controller components,
+     this.controllerComponents.forEach(function(name) { this.el.setAttribute(name, 'hand', this.data); }.bind(this));
+     // but hide by default.
+     this.el.setAttribute('visible', false);
+   }
+ });
 
-      this.el.addEventListener('controllerconnected', function (evt) {
-        evt.target.setAttribute('controller-cursor', '');
-        evt.target.setAttribute('raycaster', 'interval:100; objects:.clickable');
+ AFRAME.registerComponent("controller-with-cursor-if-present", {
+   schema: {type: 'string'},
+   init: function() {
+     this.el.setAttribute('controller-model-if-present', this.data);
 
-        var cameraCursorEl = document.querySelector('a-camera a-entity[cursor]');
-        if (cameraCursorEl) {
-          cameraCursorEl.parentElement.removeChild(cameraCursorEl);
-        }
-      });
-    }
-  });
+     // Create ray as visible guide for selection.
+     // NOTE: make sure cursor/raycaster won't intersect!
+     var ray = document.createElement('a-box');
+     ray.setAttribute('class', 'not-clickable');
+     ray.setAttribute('width', 0.001);
+     ray.setAttribute('height', 0.001);
+     ray.setAttribute('depth', 100);
+     ray.setAttribute('position', {x:0, y:0, z: -50});
+     ray.setAttribute('color', 'green');
+     ray.setAttribute('opacity', 0.95);
+     this.el.appendChild(ray);
 
-    AFRAME.registerComponent("controller-with-cursor-if-present-no-visible-ray", {
-    schema: {type: 'string'},
-    init: function() {
-      this.el.setAttribute('controller-model-if-present', this.data);
+     this.el.addEventListener('controllerconnected', function (evt) {
+       // if we had a raycaster, cursor, etc., attach here
+       evt.target.setAttribute('controller-cursor', '');
+       // need to make ray NOT an intersection target for raycaster!
+       evt.target.setAttribute('raycaster', 'interval:100; objects:.clickable');
 
-      var ray = document.createElement('a-box');
-      ray.setAttribute('class', 'not-clickable');
-      ray.setAttribute('width', 0.001);
-      ray.setAttribute('height', 0.001);
-      ray.setAttribute('depth', 100);
-      ray.setAttribute('position', {x:0, y:0, z: -50});
-      ray.setAttribute('color', 'green');
-      ray.setAttribute('opacity', 0);
-      this.el.appendChild(ray);
+       // Since we have a controller, remove gaze cursor.
+       var cameraCursorEl = document.querySelector('a-camera a-entity[cursor]');
+       if (cameraCursorEl) {
+         cameraCursorEl.parentElement.removeChild(cameraCursorEl);
+       }
+     });
+   }
+ });
 
-      this.el.addEventListener('controllerconnected', function (evt) {
-        evt.target.setAttribute('controller-cursor', '');
-        evt.target.setAttribute('raycaster', 'interval:100; objects:.clickable');
+ AFRAME.registerComponent("controller-with-cursor-if-present-no-visible-ray", {
+   schema: {type: 'string'},
+   init: function() {
+     this.el.setAttribute('controller-model-if-present', this.data);
 
-        var cameraCursorEl = document.querySelector('a-camera a-entity[cursor]');
-        if (cameraCursorEl) {
-          cameraCursorEl.parentElement.removeChild(cameraCursorEl);
-        }
-      });
-    }
-  });
+     // Create ray as visible guide for selection.
+     // NOTE: make sure cursor/raycaster won't intersect!
+     var ray = document.createElement('a-box');
+     ray.setAttribute('class', 'not-clickable');
+     ray.setAttribute('width', 0.001);
+     ray.setAttribute('height', 0.001);
+     ray.setAttribute('depth', 100);
+     ray.setAttribute('position', {x:0, y:0, z: -50});
+     ray.setAttribute('color', 'green');
+     ray.setAttribute('opacity', 0);
+     this.el.appendChild(ray);
 
-  //Hover over clickable Object
-  AFRAME.registerComponent('selecting', {
-    init: function () {
-      this.oldColor = this.el.getAttribute('material').color;
-      this.el.setAttribute('material','color','#FFD700');
-      var cursor = document.querySelector('#camera-cursor');
-      cursor.emit('start-fusing');
+     this.el.addEventListener('controllerconnected', function (evt) {
+       // if we had a raycaster, cursor, etc., attach here
+       evt.target.setAttribute('controller-cursor', '');
+       // need to make ray NOT an intersection target for raycaster!
+       evt.target.setAttribute('raycaster', 'interval:100; objects:.clickable');
 
-    },
-    remove: function () {
-      if (!this.oldColor) { return; }
-      this.el.setAttribute('material', 'color', this.oldColor);
-    }
-  });
-
-//What should the raycaster do if interaction valid?
-  AFRAME.registerComponent('selected', {
-    init: function () {
-      var x = this.el.getAttribute('id');
-
-      switch (x) {
-  case "hell":
-    Hell();
-    break;
-  case "level1":
-    backToLvl1();
-    break;
-  case "level2":
-    Level2();
-    break;
-  case "level3":
-    Level3();
-    break;
-  case "mouse":
-    useMouse();
-    break;
-  case "button":
-    disableController();
-    break;
-    }
-    }
-  });
-
-//
-  AFRAME.registerComponent('clickable', {
-    init: function () { this.el.classList.add('clickable'); },
-    remove: function () { this.el.classList.remove('clickable'); }
-  });
-
-
-  //Component for giving Enities the power to get clicked
-  AFRAME.registerComponent('clickit', {
-    dependencies: ['clickable'],
-    init: function () {
-      var el = this.el;
-      el.addEventListener('mouseenter', function (evt) {
-        evt.target.removeAttribute('selected');
-        evt.target.setAttribute('selecting', '');
-      });
-      el.addEventListener('mouseleave', function (evt) {
-        evt.target.removeAttribute('selecting');
-        evt.target.removeAttribute('selected');
-      });
-      el.addEventListener('click', function (evt) {
-        evt.target.removeAttribute('selecting');
-        evt.target.setAttribute('selected', '');
-      });
-    }
-  });
+       // Since we have a controller, remove gaze cursor.
+       var cameraCursorEl = document.querySelector('a-camera a-entity[cursor]');
+       if (cameraCursorEl) {
+         cameraCursorEl.parentElement.removeChild(cameraCursorEl);
+       }
+     });
+   }
+ });

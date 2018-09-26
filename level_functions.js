@@ -47,6 +47,28 @@
         // Set the Camera
         document.getElementById('cameraRig').setAttribute('position', '227 4 250');
         setOffset();
+
+        var drone = document.querySelector('#dronemusic');
+        drone.components.sound.stopSound();
+        var atmo = document.querySelector('#atmomusic');
+        atmo.components.sound.stopSound();
+        var birds = document.querySelector('#scene3');
+        birds.components.sound.playSound();
+      }
+
+      function Gold(){
+        document.getElementById('scene3').setAttribute('visible', 'false');
+        document.getElementById('goldlevel').setAttribute('visible', 'true');
+        document.getElementById('env_lvl3').setAttribute('environment', 'active: false;');
+
+        var gold = document.querySelector('#goldlevel');
+        gold.components.sound.playSound();
+
+        var birds = document.querySelector('#scene3');
+        birds.components.sound.stopSound();
+
+        document.getElementById('cameraRig').setAttribute('position', '400 4 400');
+        setOffset();
       }
 
       function Hell() {
@@ -54,10 +76,11 @@
         document.getElementById('scene1').setAttribute('visible', 'false');
         document.getElementById('hell_id').setAttribute('visible', 'true');
         document.getElementById('scene2').setAttribute('visible', 'false');
+        document.getElementById('scene3').setAttribute('visible', 'false');
         document.getElementById('environment_lvl2').setAttribute('environment', 'active: false;');
 
         // Set the Camera
-        document.getElementById('cameraRig').setAttribute('position', '300 4 300');
+        document.getElementById('cameraRig').setAttribute('position', '300 8 300');
         setOffset();
 
         var hellanim = document.querySelectorAll('#hellstart'), i;
@@ -68,12 +91,7 @@
         var light = document.querySelector('#hellend');
         light.emit('startafterteleport');
 
-        var end = document.querySelector('#hellend');
-        end.addEventListener('animationcomplete', function(){
-        console.log("rollback");
-        backToLvl1();
-        rollBack();
-        });
+        setTimeout(function(){ backToLvl1();}, 9000);
 
         var hellsound = document.querySelector('#you_dead');
         hellsound.components.sound.playSound();
@@ -85,32 +103,123 @@
         atmo.components.sound.stopSound();
       }
 
+      function Goldsound(){
+        var goldsound = document.querySelector('#goldsound');
+        goldsound.components.sound.playSound();
+        console.log("play goldsound");
+      }
 
       function backToLvl1(){
         document.getElementById('scene1').setAttribute('visible', 'true');
-        document.getElementById('hell').setAttribute('visible', 'false');
+        document.getElementById('scene2').setAttribute('visible', 'false');
+        document.getElementById('scene3').setAttribute('visible', 'false');
+        document.getElementById('hell_id').setAttribute('visible', 'false');
         document.getElementById('start_env').setAttribute('environment', 'active: true;');
+        document.getElementById('env_lvl3').setAttribute('environment', 'active: false;');
+
+        var oceanmusic = document.querySelector('#oceanmusic');
+        oceanmusic.components.sound.playSound();
+        var weed = document.querySelector('#weedmusic');
+        weed.components.sound.playSound();
+        var rat = document.querySelector('#ratmusic');
+        rat.components.sound.playSound();
 
         // Set the Camera
         document.getElementById('cameraRig').setAttribute('position', '10 4 20');
         setOffset();
 
+        var end = document.querySelector('#hellend');
+        end.emit('goBack');
+
+        var hellanim = document.querySelectorAll('#hellstart'), i;
+          for (i = 0; i < hellanim.length; ++i) {
+              hellanim[i].emit('goBack');
       }
-
-      //Reset Hell
-      function rollBack(){
-          var end = document.querySelector('#hellend');
-          end.emit('goBack');
-
-          var hellanim = document.querySelectorAll('#hellstart'), i;
-            for (i = 0; i < hellanim.length; ++i) {
-                hellanim[i].emit('goBack');
-        }
-      }
-
+    }
 
       function disableController(){
+        document.getElementById('vivecontrols').setAttribute('visible', 'false');
         var vive = document.querySelector('#vivecontrols');
         vive.parentNode.removeChild(vive);
         console.log("Disabled Controller");
+        var button = document.querySelector('#buttoncontainer');
+        button.parentNode.removeChild(button);
+
       }
+
+      //Hover over clickable Object
+      AFRAME.registerComponent('selecting', {
+        init: function () {
+          var cursor = document.querySelector('#camera-cursor');
+          cursor.emit('start-fusing');
+
+          this.oldColor = this.el.getAttribute('material').color;
+          this.el.setAttribute('material','color','#FFD700');
+          this.el.components.sound.playSound();
+
+        },
+        remove: function () {
+          if (!this.oldColor) { return; }
+          this.el.setAttribute('material', 'color', this.oldColor);
+        }
+      });
+
+    //What should the raycaster do if interaction valid?
+      AFRAME.registerComponent('selected', {
+        init: function () {
+          var x = this.el.getAttribute('id');
+
+          switch (x) {
+      case "hell":
+        Hell();
+        break;
+      case "level1":
+        backToLvl1();
+        break;
+      case "level2":
+        Level2();
+        break;
+      case "level3":
+        Level3();
+        break;
+      case "mouse":
+        useMouse();
+        break;
+        case "gold":
+          Gold();
+          break;
+        case "goldsound":
+          Goldsound();
+          break;
+      case "button":
+        disableController();
+        break;
+        }
+        }
+      });
+
+      AFRAME.registerComponent('clickable', {
+        init: function () { this.el.classList.add('clickable'); },
+        remove: function () { this.el.classList.remove('clickable'); }
+      });
+
+
+      //Component for giving Enities the power to get clicked
+      AFRAME.registerComponent('clickit', {
+        dependencies: ['clickable'],
+        init: function () {
+          var el = this.el;
+          el.addEventListener('mouseenter', function (evt) {
+            evt.target.removeAttribute('selected');
+            evt.target.setAttribute('selecting', '');
+          });
+          el.addEventListener('mouseleave', function (evt) {
+            evt.target.removeAttribute('selecting');
+            evt.target.removeAttribute('selected');
+          });
+          el.addEventListener('click', function (evt) {
+            evt.target.removeAttribute('selecting');
+            evt.target.setAttribute('selected', '');
+          });
+        }
+      });
