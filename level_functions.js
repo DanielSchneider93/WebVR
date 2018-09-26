@@ -1,20 +1,20 @@
-
 //Component for accessing the teleport-controls variable prevHitHeight
-      AFRAME.registerComponent('y-offset-control', {
+AFRAME.registerComponent('y-offset-control', {
         resetTeleportOffset: function() {
           console.log(this.el.components['teleport-controls'].prevHitHeight);
           this.el.components['teleport-controls'].prevHitHeight = 0
         }
-      });
+});
 
-      // call the function in the y-offset-control
-      function setOffset(){
+// call the function in the y-offset-control
+function setOffset(){
        var temp = document.querySelector('[y-offset-control]').components['y-offset-control'];
        temp.resetTeleportOffset();
        console.log("offset set");
-      }
+}
 
-      function Level2() {
+//Level 2 Functions
+function Level2() {
         //Show and Hide the Scenes
         document.getElementById('scene1').setAttribute('visible', 'false');
         document.getElementById('scene2').setAttribute('visible', 'true');
@@ -36,9 +36,10 @@
         drone.components.sound.playSound();
         var atmo = document.querySelector('#atmomusic');
         atmo.components.sound.playSound();
-      }
+}
 
-      function Level3(){
+//Level 3 Functions
+function Level3(){
         document.getElementById('scene2').setAttribute('visible', 'false');
         document.getElementById('scene3').setAttribute('visible', 'true');
         document.getElementById('environment_lvl2').setAttribute('environment', 'active: false;');
@@ -54,9 +55,10 @@
         atmo.components.sound.stopSound();
         var birds = document.querySelector('#scene3');
         birds.components.sound.playSound();
-      }
+}
 
-      function Gold(){
+// Final Gold Treasure Level
+function Gold(){
         document.getElementById('scene3').setAttribute('visible', 'false');
         document.getElementById('goldlevel').setAttribute('visible', 'true');
         document.getElementById('env_lvl3').setAttribute('environment', 'active: false;');
@@ -69,10 +71,10 @@
 
         document.getElementById('cameraRig').setAttribute('position', '400 4 400');
         setOffset();
-      }
+}
 
-      function Hell() {
-        console.log("Hell() Called");
+// got to Hell and back to Lvl 1 after 9000ms
+function Hell() {
         document.getElementById('scene1').setAttribute('visible', 'false');
         document.getElementById('hell_id').setAttribute('visible', 'true');
         document.getElementById('scene2').setAttribute('visible', 'false');
@@ -101,15 +103,17 @@
         drone.components.sound.stopSound();
         var atmo = document.querySelector('#atmomusic');
         atmo.components.sound.stopSound();
-      }
+}
 
-      function Goldsound(){
+//play sound if hover over treasures
+function Goldsound(){
         var goldsound = document.querySelector('#goldsound');
         goldsound.components.sound.playSound();
         console.log("play goldsound");
-      }
+}
 
-      function backToLvl1(){
+//reset everythin to the start
+function backToLvl1(){
         document.getElementById('scene1').setAttribute('visible', 'true');
         document.getElementById('scene2').setAttribute('visible', 'false');
         document.getElementById('scene3').setAttribute('visible', 'false');
@@ -124,7 +128,6 @@
         var rat = document.querySelector('#ratmusic');
         rat.components.sound.playSound();
 
-        // Set the Camera
         document.getElementById('cameraRig').setAttribute('position', '10 4 20');
         setOffset();
 
@@ -134,41 +137,41 @@
         var hellanim = document.querySelectorAll('#hellstart'), i;
           for (i = 0; i < hellanim.length; ++i) {
               hellanim[i].emit('goBack');
-      }
-    }
+            }
+}
 
-      function disableController(){
+//disable controller if vr headset but no controller. use 0.8.2 then as aframe version
+function disableController(){
         document.getElementById('vivecontrols').setAttribute('visible', 'false');
         var vive = document.querySelector('#vivecontrols');
         vive.parentNode.removeChild(vive);
         console.log("Disabled Controller");
         var button = document.querySelector('#buttoncontainer');
         button.parentNode.removeChild(button);
+}
 
-      }
-
-      //Hover over clickable Object
-      AFRAME.registerComponent('selecting', {
+//Hover over clickable Object
+AFRAME.registerComponent('selecting', {
         init: function () {
           var cursor = document.querySelector('#camera-cursor');
+          //make cursor fusing
           cursor.emit('start-fusing');
-
           this.oldColor = this.el.getAttribute('material').color;
+          //set the color to gold
           this.el.setAttribute('material','color','#FFD700');
+          //play doorsound
           this.el.components.sound.playSound();
-
         },
         remove: function () {
           if (!this.oldColor) { return; }
           this.el.setAttribute('material', 'color', this.oldColor);
         }
-      });
+});
 
-    //What should the raycaster do if interaction valid?
-      AFRAME.registerComponent('selected', {
+//What should the raycaster do if interaction entity id x ?
+AFRAME.registerComponent('selected', {
         init: function () {
           var x = this.el.getAttribute('id');
-
           switch (x) {
       case "hell":
         Hell();
@@ -194,18 +197,18 @@
       case "button":
         disableController();
         break;
-        }
-        }
-      });
+        }}
+});
 
-      AFRAME.registerComponent('clickable', {
+//needed for clickit component
+AFRAME.registerComponent('clickable', {
         init: function () { this.el.classList.add('clickable'); },
         remove: function () { this.el.classList.remove('clickable'); }
-      });
+});
 
 
-      //Component for giving Enities the power to get clicked
-      AFRAME.registerComponent('clickit', {
+//Component for giving Enities the power to get interacted with
+AFRAME.registerComponent('clickit', {
         dependencies: ['clickable'],
         init: function () {
           var el = this.el;
@@ -222,4 +225,4 @@
             evt.target.setAttribute('selected', '');
           });
         }
-      });
+});

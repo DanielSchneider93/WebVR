@@ -105,6 +105,7 @@ AFRAME.registerComponent('controller-cursor', {
    }
  });
 
+//copy pasted component for controller with no ray
  AFRAME.registerComponent("controller-with-cursor-if-present-no-visible-ray", {
    schema: {type: 'string'},
    init: function() {
