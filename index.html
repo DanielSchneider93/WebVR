@@ -4,7 +4,7 @@
      <!-- Version 0.8.2 makes moving with mouse possible but breaks all animations and controller interactions
      <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>-->
 
-     <!-- Master Verison makes all Controller usable but breaks mouse controlls and cursor-->
+     <!-- Master Verison makes all Controller usable but breaks mouse controls and cursor-->
      <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.js"></script>
      <!-- extras-->
      <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
@@ -66,7 +66,7 @@
 <!-- Camera and Teleport -->
 <a-entity id="cameraRig" position="10 4 20">
   <a-entity id="vivecontrols" position="0 1.6 0">
-  <a-entity id='left-controller' controller-with-cursor-if-present="left"></a-entity>
+  <a-entity id='left-controller' controller-with-cursor-if-present="left" raycaster="far:20; interval:250; objects:.clickable"></a-entity>
   <!-- Todo: Disable teleport controls if mouse mode -->
   <a-entity id='right-controller' raycaster="objects: .selectable; far: 2"
     teleport-extras
@@ -83,26 +83,8 @@
 </a-entity>
 
 <a-camera id="head">
-  <a-entity position="0.1 -0.4 0"  raycaster="objects: .selectable; far: 2"
-    teleport-extras
-    y-offset-control
-    teleport-controls=
-      "cameraRig: #cameraRig;
-      teleportOrigin: #head;
-      startEvents:starttouch;
-      endEvents:endtouch;
-      curveShootingSpeed:25;
-      hitCylinderRadius:0.3;
-      collisionEntities: #tele"></a-entity>
-
    <a-entity id="camera-cursor"
     cursor="fuse:true; fuseTimeout:2000"
-    raycaster="far:20; interval:250; objects:.clickable"
-    geometry="primitive:ring"
-    scale="0.05 0.05 0.05"
-    material="color:blue; shader:flat"
-    position="0 0 -3"
-    animation="property: geometry.thetaLength; startEvents:start-fusing; from: 0; to: 360; dur: 1800; easing: linear; delay:200">
     </a-entity>
 </a-camera>
 </a-entity>
@@ -110,10 +92,6 @@
 
 <!--- Scene 1 ------------------------------------------------------------------------------------------------------------------- -->
 <a-entity id="scene1">
-
-  <a-entity id="buttoncontainer" opacity="0.7" width="3.5" height="3.5" position="0 2.5 20" rotation="0 90 0" geometry="primitive:plane;height:2.5;width:3.5" material="shader:flat;transparent:true;opacity:0.7;color:#22252a">
-      <a-entity id="button" clickit geometry="width:2.5;height:0.75;depth:0.02" material="shader:flat;side:double;color:#d3d3d4" rotation="" position="-6.383289362546959e-19 0 0.0028747779594564538" text__text_1="value:Disable Controller;zOffset:0.1;color:#000000;align:center;width:5"></a-entity>
-  </a-entity>
 
   <!--environment-->
   <a-entity id="start_env" shadow="receive: true" environment="preset: arches; lighting: none; groundYScale: 4; dressingAmount: 5; ground:canyon;"></a-entity>
@@ -290,7 +268,7 @@
  </a-entity>
 
 </a-entity>
-<!--- End of Scene 3 Start of Gold--------------------------------------------------------------------------------------------------------------------->
+<!--- End of Scene 3 Start of Gold------------------------------------------------------------------------------------------------------------------- -->
 <a-entity id="goldlevel" visible="false" position="400 0 400" sound="src: url(sounds/gold.mp3); autoplay: false;">
 <!-- Treasure Room -->
   <a-plane rotation="-90 0 0"  geometry="height:30;width:30" color="black" shadow="receive: true"></a-plane>
@@ -306,10 +284,10 @@
   <a-entity clickit id="goldsound" gltf-model="#treasure" shadow="receive:false" position="-0.5 1.6 -5.5" scale="2 2 2" rotation="0 0 0" sound="src: url(sounds/coins.mp3); autoplay: false;"></a-entity>
   <a-entity clickit id="goldsound" gltf-model="#treasure" shadow="receive:false" position="6 1.6 -2.75" scale="2 2 2" rotation="0 -45 0" sound="src: url(sounds/coins.mp3); autoplay: false;"></a-entity>
 
-  <a-obj-model clickit id="level1" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="0 3.2 14" rotation="0 0 0" scale="0.8 0.8 0.5" color="#FFD700"></a-obj-model>
+  <a-obj-model clickit id="level1" sound="src: url(sounds/door.mp3); autoplay: false; loop: false;" shadow="receive:false" src="#door-obj" position="0 3.2 14" rotation="0 0 0" scale="0.8 0.8 0.5" color="#31d842"></a-obj-model>
 
 </a-entity>
-<!--- (Hölle)--------------------------------------------------------------------------------------------------------->
+<!--- (Hölle) ------------------------------------------------------------------------------------------------------- -->
 <a-entity id="hell_id" visible="false" position="300 0 300">
 
 

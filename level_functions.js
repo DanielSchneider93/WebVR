@@ -140,16 +140,6 @@ function backToLvl1(){
             }
 }
 
-//disable controller if vr headset but no controller. use 0.8.2 then as aframe version
-function disableController(){
-        document.getElementById('vivecontrols').setAttribute('visible', 'false');
-        var vive = document.querySelector('#vivecontrols');
-        vive.parentNode.removeChild(vive);
-        console.log("Disabled Controller");
-        var button = document.querySelector('#buttoncontainer');
-        button.parentNode.removeChild(button);
-}
-
 //Hover over clickable Object
 AFRAME.registerComponent('selecting', {
         init: function () {
@@ -194,9 +184,6 @@ AFRAME.registerComponent('selected', {
         case "goldsound":
           Goldsound();
           break;
-      case "button":
-        disableController();
-        break;
         }}
 });
 
